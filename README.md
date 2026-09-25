@@ -2,7 +2,7 @@
 
 A community-oriented map of approaches to recursive self-improvement: systems, kernels, model development, research agents and evaluation.
 
-[**Interactive browser**](index.html) · [Research insights](index.html#insights) · [Taxonomy](TAXONOMY.md)
+[**Interactive browser**](https://jacky-leng.github.io/awesome-rsi/) · [Research insights](https://jacky-leng.github.io/awesome-rsi/#insights) · [Taxonomy](TAXONOMY.md)
 
 Reviewed through **2026-09-25** · **102 works**.
 
