@@ -1,0 +1,3981 @@
+{
+  "updated": "2026-09-25",
+  "schema_version": 1,
+  "works": [
+    {
+      "slug": "vibeserve",
+      "title": "VibeServe: Can AI Agents Build Bespoke LLM Serving Systems?",
+      "short_title": "VibeServe",
+      "year": 2026,
+      "date": "2026-05-07",
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2605.06068v1"
+        },
+        {
+          "label": "Official repository (now VibeSys)",
+          "url": "https://github.com/uw-syfi/vibesys"
+        }
+      ],
+      "publication": {
+        "date": "2026-05",
+        "scope": "Complete specialized engines",
+        "actor": "Codex CLI; underlying model unspecified",
+        "target": "Up to Qwen3-32B; H100, L4 and Apple hardware",
+        "summary": "Generates a serving implementation for a specified model, hardware platform and workload.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "VibeServe, whose repository is now named VibeSys, studies six deployment scenarios. Its largest text-model case uses Qwen3-32B on one H100 for predicted-output code editing with CodeEditorBench. Another uses Olmo-Hybrid-7B on one L4 with a shared 32k-token prefix, 128-token suffix, 128-token output and concurrency 20. The deliverable is an executable specialized serving path, with permitted reuse of libraries such as FlashInfer or MLX."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "An outer orchestrator maintains an issue backlog, Git checkpoints and Markdown memory. Fresh-context Implementer, Accuracy Judge and Performance Evaluator roles implement, check and profile each change. Skills supply knowledge and implementation references from existing serving systems. Humans provide the deployment requirements, reference implementation and read-only correctness checker. This is an executable workflow around a coding agent; the paper does not train a new model."
+          ],
+          [
+            "Results and comparison",
+            "Standard Llama-8B/H100 serving approximately matches vLLM. The Qwen-32B editing case reports 5.95× over vanilla vLLM and about 2× over draft-model speculation. The Olmo case reports 3.45× throughput by sharing both attention KV and DeltaNet state. Other cases report 1.69× ASR TTFT improvement, Mac JSON decoding from 22.1 to 8.6 seconds, and Show-o2 latency from 873 to 687 ms on H100. These use different references and deployment contracts and must not be averaged into one speedup."
+          ],
+          [
+            "Research budget",
+            "Appendix A reports role calls and active time: approximately 3–25 hours per scenario. These are neither a complete token ledger nor GPU-hours. The paper acknowledges nontrivial per-target search costs."
+          ],
+          [
+            "Evaluation context",
+            "Evaluates single-seed searches across six deployment scenarios. Predicted-output editing, shared recurrent state and permitted image-generation approximations are task-specific conditions. JSON-schema failures are reported. The reviewed paper and current repository use different versions; matched-token harness and skills ablations are outside the reported study."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "skysynth",
+      "title": "SkyDiscover-Synthesize (SkySynth): Building Specialized Systems We Can Trust with Agents",
+      "short_title": "SkySynth",
+      "year": 2026,
+      "category": "system",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies"
+      ],
+      "sources": [
+        {
+          "label": "Official blog (September 2026)",
+          "url": "https://skydiscover-ai.github.io/blog-skysynth.html"
+        },
+        {
+          "label": "Official code",
+          "url": "https://github.com/skydiscover-ai/skydiscover/tree/main/skydiscover/synthesize"
+        },
+        {
+          "label": "Earlier JIT/Jitskit work (May 2026; KV experiments)",
+          "url": "https://arxiv.org/abs/2605.24096v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-09; JIT precursor 2026-05",
+        "scope": "Complete specialized engines",
+        "actor": "Opus 4.8 in the September report",
+        "target": "Qwen3-4B on one NVIDIA L4",
+        "summary": "Synthesizes a specialized engine while strengthening specifications and tests.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "The inference case targets repeated sampling with shared long prefixes. The pinned public task specifies BF16 weights and KV cache, non-thinking mode, two 24,576-token roots with 32 branches each, 64 concurrent requests, and 128/256 output tokens through an OpenAI-compatible completions endpoint. PyTorch may be used for validation but not as the production engine; CUDA, Triton and established low-level libraries are allowed."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "Spec Builder prepares requirements and environment/workload specifications. Planner, Coding Agent, Evaluator and Critic iterate on implementations; an Auditor looks for violations that improve the score and turns confirmed violations into tests. The public implementation includes a lead SKILL.md, role prompts, Python specification/checkpoint tools, test-validation scripts, delivery hooks and a cross-run knowledge base. In the inspected snapshot, a new adversarial test must pass a trusted reference and reject a corresponding faulty implementation."
+          ],
+          [
+            "Results and comparison",
+            "The September report describes approximately 2.2× throughput over tuned vLLM/SGLang for its inference workload. Batched decode amortizes weight reads; grouped cascade attention reuses shared-prefix KV reads. An agent modifying vLLM for roughly seven hours improved 287 to 490 tokens/s, still below the synthesized engine. A candidate that silently truncated context to 1,000 tokens illustrates why checking short inputs alone is insufficient."
+          ],
+          [
+            "Research budget",
+            "No complete inference-specific token/GPU-hour comparison was established. The report’s KV-store development costs must not be assigned to the inference case."
+          ],
+          [
+            "Evaluation context",
+            "The inference entry refers to the September blog/code case on one Qwen3-4B model and one L4. The May JIT/Jitskit paper and the 95.2% formal-verification result concern storage systems. Fixed test prompts use exact outputs; other prompts permit near-tie variation. Repository contracts can change across versions."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "sglang-agent-dev",
+      "title": "SGLang Agent-Assisted Development: Skills and Real Serving Patches",
+      "short_title": "SGLang agent development",
+      "year": 2026,
+      "category": "system",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies"
+      ],
+      "sources": [
+        {
+          "label": "Official blog",
+          "url": "https://www.lmsys.org/blog/2026-07-02-agent-assisted-sglang-development"
+        },
+        {
+          "label": "PR28744：router tokenize-once",
+          "url": "https://github.com/sgl-project/sglang/pull/28744"
+        },
+        {
+          "label": "PR22664：allreduce fusion auto-enable",
+          "url": "https://github.com/sgl-project/sglang/pull/22664"
+        }
+      ],
+      "publication": {
+        "date": "2026-07; PRs merged 2026-04 and 2026-06",
+        "scope": "Changes to an existing serving stack",
+        "actor": "Claude Code / Codex; exact underlying models not consistently reported",
+        "target": "DeepSeek-V4-Flash; Qwen3-Coder-Next on 4×H100",
+        "summary": "Public skills and merged patches document concrete agent-assisted serving development.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "PR #28744 modifies both router and engine for DeepSeek-V4-Flash with seven engines and 60k/ 125k-token prefixes; the hardware is not disclosed in the inspected evidence. PR #22664 has a clearer hardware contract: Qwen3-Coder-Next, four H100s, TP=4, 2,048 input tokens, 256 output tokens, 128 requests and concurrency 32. Both deliver patches to an existing system."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "Skills cover CUDA debugging, serving benchmarks, profiler analysis, pipeline analysis and a Humanize loop. They encode preflight checks, executable measurement procedures, artifact formats and review gates. A typical loop produces a plan, has Claude Code implement/benchmark/commit changes, and has Codex review the evidence before continuing. Maintainers set goals and review final changes; a single-agent Goal variant is also described."
+          ],
+          [
+            "Results and comparison",
+            "PR #28744 tokenizes once at the Rust ingress, uses token IDs for cache-aware routing and forwards them to engines to avoid duplicate work, with fallbacks for unsupported inputs. Reported TTFT reductions are 29%/ 41% at idle and 34–49% under selected loads. PR #22664 increases throughput from 5.49 to 9.41 requests/s (+71.4%); TTFT falls from 456.24 to 167.54 ms and TPOT from 50.41 to 25.49 ms. Its patch enables an existing FlashInfer all-reduce fusion path for the architecture; it does not invent a new collective."
+          ],
+          [
+            "Research budget",
+            "No complete experiment-wide token ledger or matched-budget skills ablation. Lower orchestration overhead in a workflow description is not itself measured token savings."
+          ],
+          [
+            "Evaluation context",
+            "The reported artifacts are merged patches to an existing serving stack. The fusion evaluation includes MMLU/GSM8K comparisons. Hardware and model examples in the blog are distinguished from the measured PR configurations."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "asari",
+      "title": "Asari: automated inference optimization",
+      "short_title": "Asari",
+      "year": 2026,
+      "category": "system",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies",
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Primary source",
+          "url": "https://asari.ai/blog/inference-optimization"
+        }
+      ],
+      "publication": {
+        "date": "2026-07",
+        "scope": "Changes to an existing serving stack",
+        "actor": "Optimization actor not disclosed",
+        "target": "DeepSeek-V4-Pro / GLM-5.2; 8×B200, vLLM 0.23",
+        "summary": "Optimizes mature large-model serving across kernels, scheduling and configuration.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "The target is end-to-end inference for two large models at multiple concurrency levels on eight B200s. The artifact is a modified vLLM stack, not a newly synthesized server."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "A discover/build → evaluate → verify → self-improve loop combines profiling, static inspection and accumulated experience. Hierarchical microbenchmarks and end-to-end tests shorten feedback cycles. Token-distribution checks on multilingual C4 prompts compare optimized and stock execution. The workflow is described publicly, but the proprietary agent and its skills are not sufficiently exposed for full reconstruction."
+          ],
+          [
+            "Results and comparison",
+            "The report gives up to 16% improvement in throughput and interactivity against matched vLLM baselines. Client/server configuration affects absolute values, so results should be compared within each setup. One transfer example reuses a deadlock lesson from DeepSeek to GLM and avoids about 44 minutes of waiting."
+          ],
+          [
+            "Research budget",
+            "Approximately one day of optimization per concurrency setting; total tokens, failed attempts and all-in GPU-hours are not fully disclosed."
+          ],
+          [
+            "Evaluation context",
+            "Evaluates a combined optimization workflow against a mature serving baseline with distribution checks. A deadlock-lesson transfer is one reported example; separate contributions from accumulated experience, search and human input are not isolated in this study."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "glm-infra",
+      "title": "GLM builds its inference infrastructure",
+      "short_title": "GLM inference infra",
+      "year": 2026,
+      "category": "system",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies"
+      ],
+      "sources": [
+        {
+          "label": "Primary source",
+          "url": "https://z.ai/blog/glm-built-its-inference-infrastructure"
+        }
+      ],
+      "publication": {
+        "date": "2026-09",
+        "scope": "Production engineering report",
+        "actor": "GLM-5.3 researcher (~753B total parameters)",
+        "target": "GLM-5.3-Flash production inference",
+        "summary": "Reports substantial gains during human–AI development of production infrastructure.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "The report describes production inference engineering involving CPU/GPU coordination, KV transfer and attention implementation. Its deployment discussion refers to roughly 100k devices; this is deployment scale, not the size of the agent’s experimental allocation."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "Human engineers and GLM diagnose bottlenecks, modify implementations and validate changes. Public material does not provide a complete reproducible skills library, orchestration implementation or set of research prompts. One case traces KV-transfer gaps to CPU-side behavior including Python/GIL effects."
+          ],
+          [
+            "Results and comparison",
+            "The vendor reports approximately 3× throughput from the initial implementation to production in under two weeks. A local KV-transfer idle-gap fraction falls from over 20% to under 1%. The two measurements have different denominators."
+          ],
+          [
+            "Research budget",
+            "Project duration is reported, but the agent’s total tokens, GPU-hours, failed experiments and human intervention are not fully itemized."
+          ],
+          [
+            "Evaluation context",
+            "The source is a production engineering report combining AI assistance, expert work and serving-stack development. The catalog review uses the official indexed text; the locally archived HTML does not contain the full article."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "flashvector",
+      "title": "FlashVector",
+      "short_title": "FlashVector",
+      "year": 2026,
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies"
+      ],
+      "sources": [
+        {
+          "label": "Primary source",
+          "url": "https://arxiv.org/html/2609.17391v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-09",
+        "scope": "Changes across an existing recommendation stack",
+        "actor": "Actor model not adequately disclosed",
+        "target": "Unity recommendation serving; RTX PRO 6000 Blackwell",
+        "summary": "Optimizes kernels, model graphs, the model server and CPU feature processing.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "The examined ranking workload uses FP16/AOTInductor, an RTX PRO 6000 Blackwell and batches of 2,000 per request. Other cases modify NVIDIA Triton’s C++ server and a Python feature-processing backend. The target is recommendation serving, not autoregressive text-model inference."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "Expert-authored cookbooks and profiling guidance inform a loop that selects a layer, profiles it, diagnoses a bottleneck, implements a change and verifies the full local path. Accepted changes are retained; a refinement step records experience. The harness also handles measurement noise and applying/undoing patches. It does not optimize all four layers simultaneously in every iteration."
+          ],
+          [
+            "Results and comparison",
+            "A two-tower retrieval case moves string-input conversion from Python to C++, reporting a 30× local improvement. A ranking case exposes embedding operations to AOTInductor fusion and reuses duplicate embeddings. One reported ranking configuration reaches about 2× throughput and 1.98× latency improvement; CPU feature processing reports about 1.6×. These cannot be multiplied into a system-wide figure."
+          ],
+          [
+            "Research budget",
+            "No complete LLM-token budget was established. The paper discusses stabilizing measurements, including reducing observed noise through additional samples."
+          ],
+          [
+            "Evaluation context",
+            "The workloads concern recommendation serving and span multiple software layers. Local serialization measurements and full-path serving measurements have different scopes. Agent search and expert cookbooks are used together in the reported workflow."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "rooflang",
+      "title": "RoofLang: Enabling AI-Driven Architecting of LLM Inference Systems",
+      "short_title": "RoofLang",
+      "year": 2026,
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2609.12551v1"
+        },
+        {
+          "label": "Author project page (analytical estimates)",
+          "url": "https://yzygitzh.github.io/rooflang/"
+        }
+      ],
+      "publication": {
+        "date": "2026-09",
+        "scope": "Architecture search in a simulator",
+        "actor": "DeepSeek-V4-Pro; V4-Flash for lightweight/subagent work",
+        "target": "Simulated B300 configurations, up to 256 GPUs in the agent cases",
+        "summary": "Searches legal computation, placement and communication graphs before implementation.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "The largest illustrated agent case models DeepSeek-V4-Pro decode at 64k context on 256 B300s, batch 4,096, EP=16 and PP=16. Another models 1M-token prefill on 16 B300s. The output is a transformed graph, placement and simulated trace—not a running B300 serving implementation."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "RoofLang supplies compute/hardware graphs, constrained placement and semantics-preserving graph transformations, and a roofline-based discrete-event simulator. A persistent Claude Code process uses DeepSeek models, reads the repository and baseline results, proposes changes, checks legality and consumes simulation feedback. The specialized DSL and evaluator are central; a large skill library is not the main contribution."
+          ],
+          [
+            "Results and comparison",
+            "Changing the 256-GPU pipeline partition from (4×13, 3×3) to (3, 4×14, 2) accounts for embedding/output-head costs and improves simulated throughput/interactivity by 20.3%. Expert splitting gives 6.23% in an eight-B300 prefill case; node-local expert replication gives 50.1% in the 16-B300 long-context case. Cross-model peak-throughput comparisons are separate from these agent-search gains."
+          ],
+          [
+            "Research budget",
+            "The persistent loop has no preset turn limit and stops at the agent’s discretion. No complete comparable token/search budget is reported. Large simulations can themselves require hours and substantial host memory."
+          ],
+          [
+            "Evaluation context",
+            "Results use analytical simulation with assumptions about MoE balance and execution overlap. Initial workload and hardware graphs are supplied externally. Real-hardware measurements and calibration of omitted execution costs are separate evaluation steps."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "glia",
+      "title": "Glia: A Human-Inspired AI for Automated Systems Design and Optimization",
+      "short_title": "Glia",
+      "year": 2025,
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies"
+      ],
+      "sources": [
+        {
+          "label": "Paper v5",
+          "url": "https://arxiv.org/abs/2510.27176v5"
+        }
+      ],
+      "publication": {
+        "date": "2025-10; reviewed revision 2026-04",
+        "scope": "Routing and scheduling research",
+        "actor": "o3; GPT-5 for adaptation",
+        "target": "Llama3-8B / 4×A10; simulated 70B / 8×H100",
+        "summary": "Generates system policies, with both simulator results and a manually integrated real-stack transfer.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "The largest adaptation task uses Vidur to simulate Llama3.3-70B FP8 on eight H100s, 200 concurrent requests and a P90 TTFT constraint below 1,500 ms while maximizing QPS. The real-stack experiment uses Llama3-8B on four A10s in vLLM ProductionStack."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "A Researcher reads code, proposes hypotheses and runs experiments. A Supervisor observes the research process and results, asks questions and redirects work without direct code access. Humans supply the environment, simulator and objective. MultiContext variants restart search contexts; they are not equivalent to Engram’s persistent research archive."
+          ],
+          [
+            "Results and comparison",
+            "The main routing simulation reports 2.2× lower response time than least-loaded queue and 1.6× versus OpenEvolve. At 7.5 QPS, the real-stack transfer reports over 4.5× lower slowdown than LLQ; slowdown is response time relative to an idealized reference, not throughput. The 70B adaptation meets its SLO in 10/10 simulated trials."
+          ],
+          [
+            "Research budget",
+            "Some configurations use about $30 per run and 15 or 100 simulator evaluations. Evaluation counts and dollar limits are not a complete token-normalized comparison."
+          ],
+          [
+            "Evaluation context",
+            "The smaller-model routing policy is evaluated on real hardware with human integration; the larger-model adaptation is simulated. Agent and human development-time comparisons use different budget conditions."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "engram-systems",
+      "title": "Improving Coherence and Persistence in Agentic AI for System Optimization",
+      "short_title": "Engram（systems）",
+      "year": 2026,
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2603.21321v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-03",
+        "scope": "Persistent research memory for policy search",
+        "actor": "o3; GPT-5.2 in some sensitivity experiments",
+        "target": "Vidur Llama3-8B / 4×A10 routing; LLM-SQL",
+        "summary": "Uses an Archive and Research Digest to sustain research across fresh agent contexts.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "The inference-related tasks include request routing under Vidur and input reordering for LLM-SQL across five datasets. The artifact is a policy program and research history, not a new engine or updated model weights."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "Fresh-context researchers read a compact Digest, retrieve detailed code/experiments from an Archive, formulate hypotheses, edit programs, run an evaluator and write a handoff. The Digest records insights, failures and next steps. This is persistent research state around task-specific evaluators, rather than a serving-specific skills library."
+          ],
+          [
+            "Results and comparison",
+            "For routing, ten seeds with 100 evaluations per run yield mean best response time of 23.9 seconds versus 25.7 for Glia and 39.2 for OpenEvolve. LLM-SQL scores are 0.721 versus 0.719 and 0.714. The latter score combines 95% cache-hit contribution with a 5% runtime bonus; it is not a throughput ratio."
+          ],
+          [
+            "Research budget",
+            "Matching 100 evaluations does not match the tokens used to read, summarize and retrieve research history. A complete inference-specific token ledger was not established in this review."
+          ],
+          [
+            "Evaluation context",
+            "Routing is evaluated in simulation. Reported policy scores, their uncertainty and supplied preprocessing define the inference-related comparison; broader network-optimization tasks have separate objectives."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "adrs",
+      "title": "Let the Barbarians In: How AI Can Accelerate Systems Research",
+      "short_title": "ADRS",
+      "year": 2025,
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper v4",
+          "url": "https://arxiv.org/abs/2512.14806v4"
+        }
+      ],
+      "publication": {
+        "date": "2025-12",
+        "scope": "System-policy search formulation",
+        "actor": "GPT-5 / Gemini 3 Pro Preview",
+        "target": "EPLB, model placement and LLM-SQL among ten systems tasks",
+        "summary": "Packages systems research into editable programs with executable evaluators.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "Inference-related tasks include MoE expert load balancing, Prism model-to-GPU placement and LLM-SQL input ordering. The output is a heuristic or algorithm inside a fixed interface, not a complete inference runtime."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "Humans provide a seed program, API, problem description and evaluator returning quality, runtime or cost feedback. Existing systems such as OpenEvolve, GEPA and ShinkaEvolve generate and select candidates. The contribution is the research formulation and task harness rather than a new frontier researcher or inference-specific skill library."
+          ],
+          [
+            "Results and comparison",
+            "EPLB reports comparable balance with an approximately 13× faster placement algorithm. Prism reports about 20.9% lower benchmark cost than a published human solution. LLM-SQL reports roughly 3–3.9× faster reordering with similar cache hit rates. None is a direct claim that served LLM tokens became faster by the same factor."
+          ],
+          [
+            "Research budget",
+            "Typical experiments use 100 iterations and three repeats. Example task budgets report around five hours/≤$15 for EPLB and one hour/≤$15–20 for Prism/LLM-SQL. These do not replace a full token accounting."
+          ],
+          [
+            "Evaluation context",
+            "The ten-task suite includes inference-related and other systems tasks. Modeled placement cost, optimizer runtime and deployed token latency measure different quantities. Task interfaces, objectives and domain hints are supplied by the benchmark."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "skydiscover-adaevolve",
+      "title": "AdaEvolve: Adaptive LLM-Driven Zeroth-Order Optimization (SkyDiscover)",
+      "short_title": "AdaEvolve / SkyDiscover",
+      "year": 2026,
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "AdaEvolve paper v1",
+          "url": "https://arxiv.org/abs/2602.20133v1"
+        },
+        {
+          "label": "SkyDiscover official code",
+          "url": "https://github.com/skydiscover-ai/skydiscover"
+        }
+      ],
+      "publication": {
+        "date": "2026-02",
+        "scope": "Adaptive code-search infrastructure",
+        "actor": "GPT-5 / Gemini 3 Pro",
+        "target": "ADRS inference-related policy tasks",
+        "summary": "Adapts exploration and search-budget allocation across populations of candidate programs.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "AdaEvolve evaluates EPLB, Prism and LLM-SQL among broader systems tasks. The resulting artifacts are optimized policy functions and search histories. SkyDiscover is the framework; SkySynth is a separate subsequent system-synthesis branch."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "ContextBuilder, SolutionGenerator, Evaluator and Selector organize code evolution. Within islands, improvement history adjusts exploration; UCB allocates effort across islands, and stagnation can trigger new high-level guidance. A task supplies evaluator.py, a seed/configuration and a problem description."
+          ],
+          [
+            "Results and comparison",
+            "With GPT-5, LLM-SQL scores 0.746±0.03 versus OpenEvolve’s 0.710±0.01; Prism scores 26.30 versus 26.23, and EPLB 0.134 versus 0.127. These are task-specific scores, not comparable throughput or dollar figures."
+          ],
+          [
+            "Research budget",
+            "ADRS experiments use 100 iterations and three repeats. A fixed iteration count does not equalize prompt lengths, candidate generation costs or evaluator runtime."
+          ],
+          [
+            "Evaluation context",
+            "The reviewed results concern policy search in AdaEvolve v1. Later SkyDiscover-family methods and framework versions have separate results and configurations."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "inferencebench",
+      "title": "InferenceBench",
+      "short_title": "InferenceBench",
+      "year": 2026,
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2607.20468v1"
+        },
+        {
+          "label": "Project (live updates)",
+          "url": "https://inferencebench.ai/"
+        }
+      ],
+      "publication": {
+        "date": "2026-05† / identifier 2607",
+        "scope": "End-to-end delivery benchmark",
+        "actor": "15 frontier agent configurations; best aggregate: Sonnet 4.6",
+        "target": "Mistral-7B on one H100",
+        "summary": "Tests whether an agent can deliver a working, faster inference endpoint within two hours.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "Each run starts from an empty directory with a target model, one H100 and an OpenAI-compatible endpoint contract. Four scenarios emphasize TTFT, TPOT, concurrent throughput or a combined objective. The main study comprises 15 configurations × four scenarios × three seeds."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "The environment supplies hardware, model access and quality/performance evaluators. Agents select frameworks, attention backends, quantization and runtime settings. The final deliverable must launch and serve requests; 169 of 180 runs ultimately use vLLM. Starting from an empty directory therefore usually means assembling/configuring an existing stack rather than synthesizing a new runtime."
+          ],
+          [
+            "Results and comparison",
+            "The best agent reaches an aggregate 8.08× over eager, compared with 4.05× for default vLLM. Under the same wall-clock budget, SMAC reaches 11.53×, TPE 11.25× and random search 10.20×. Best-seen and final submissions differ when a last change breaks delivery."
+          ],
+          [
+            "Research budget",
+            "Two hours and one H100 per run. This controls elapsed time and available hardware, not total tokens or an identical configuration-search space."
+          ],
+          [
+            "Evaluation context",
+            "Uses single-GPU 7B serving and a quality gate retaining at least 95% of baseline MMLU-Pro performance on 500 questions. The source reports May 20 while the arXiv identifier begins 2607; the first-release month remains unresolved."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "iso-bench",
+      "title": "ISO-Bench",
+      "short_title": "ISO-Bench",
+      "year": 2026,
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2602.19594v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-02",
+        "scope": "Real-repository optimization benchmark",
+        "actor": "Claude Code / Sonnet 4.5; Codex / GPT-5; TRAE; Gemini judge",
+        "target": "54 tasks: 39 vLLM and 15 SGLang PRs",
+        "summary": "Reconstructs real serving performance work from merged patches.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "Tasks reset repositories to the state before a real optimization PR and ask an agent to address the issue. The deliverable is a patch to a functioning serving stack; this tests repository engineering rather than greenfield engine synthesis."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "The benchmark supplies repository state, problem descriptions and execution tests. Coding harnesses implement changes; semantic assessment complements measured performance. Task construction and executable evaluation are the main contribution, not a new inference-research agent."
+          ],
+          [
+            "Results and comparison",
+            "Execution success varies by setup, including 46.2% for Claude Code on vLLM and 86.7% for TRAE/GPT-5 on SGLang; these are not speedup percentages. A concrete successful case moves reshape outside a FlashAttention custom op and gains 21.09% throughput. Another Bamba-9B case gets faster while accuracy collapses from 32 to 0, illustrating why performance alone is insufficient."
+          ],
+          [
+            "Research budget",
+            "A complete normalized token/GPU-hour comparison was not established in the reviewed material."
+          ],
+          [
+            "Evaluation context",
+            "Tasks originate in public PRs, so possible prior exposure is relevant to evaluation design. Reference-patch grading, alternative valid solutions, execution success, correctness and acceleration are separate comparison dimensions."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "amd-apex",
+      "title": "AMD Apex",
+      "short_title": "AMD Apex",
+      "year": 2026,
+      "category": "system",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Systems code & policies",
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Official project",
+          "url": "https://github.com/AMD-AGI/Apex"
+        },
+        {
+          "label": "Repository metadata (creation date)",
+          "url": "https://api.github.com/repos/AMD-AGI/Apex"
+        }
+      ],
+      "publication": {
+        "date": "2026-02*; repository inspected 2026-09",
+        "scope": "Reusable engineering tools",
+        "actor": "Configurable coding-agent backend",
+        "target": "AMD/ROCm serving; registry includes GPT-OSS-120B",
+        "summary": "Connects serving profiles to kernel generation, validation and reintegration.",
+        "details": [
+          [
+            "Concrete task and artifact",
+            "The repository documents a registry of 17 inference configurations, including GPT-OSS-120B. This establishes available task entry points, not a verified successful 120B optimization experiment. The artifact is a reusable optimization environment."
+          ],
+          [
+            "Method and supplied infrastructure",
+            "Benchmark the full service, rank hot kernels, ask an LLM to edit HIP/Python, then compile and check correctness/performance through Magpie. A local gain above 1.05× permits hotpatching into the dependency installation, followed by an end-to-end retest. Domain skills, ROCm documentation/MCP tools, ground-truth specifications and cache isolation support the loop."
+          ],
+          [
+            "Results and comparison",
+            "The principal verified contribution here is the public workflow and implementation. No unified controlled result table was established that would justify a general serving speedup or research-efficiency claim."
+          ],
+          [
+            "Research budget",
+            "Backends and run configurations vary; no fixed-model, fixed-budget comparative experiment was established."
+          ],
+          [
+            "Evaluation context",
+            "The entry describes a configurable implementation and its available interfaces. Actor choice and optimization outcomes depend on run configuration. February denotes repository creation; no confirmed paper release date is assigned."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "cuda-agent",
+      "title": "CUDA Agent",
+      "short_title": "CUDA Agent",
+      "year": 2026,
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code",
+        "Model weights"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2602.24286v1"
+        },
+        {
+          "label": "Project",
+          "url": "https://cuda-agent.github.io/"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Seed1.6: 230B total / 23B active",
+        "summary": "RL updates kernel-generation weights using synthetic tasks and executable rewards.",
+        "result": "Reports 98.8% correctness and 96.8% of tasks faster than torch.compile. The geometric speedup is 2.11× on the correct subset, using the best artifact selected from each trajectory. Results concern kernel tasks."
+      }
+    },
+    {
+      "slug": "avo",
+      "title": "AVO: Agentic Variation Operator",
+      "short_title": "AVO",
+      "year": 2026,
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2603.24517v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Kernel-study actor not established",
+        "summary": "Agent-driven profiling/editing with lineage, knowledge and supervision.",
+        "result": "Reports approximately seven days, 500 directions and 40 versions. Peak MHA gains are 3.5% over cuDNN 9.19.1 and 10.5% over FA4; some short-sequence differences fall within measurement noise."
+      }
+    },
+    {
+      "slug": "ako",
+      "title": "AKO: Autonomous Kernel Optimization",
+      "short_title": "AKO",
+      "year": 2026,
+      "category": "kernel",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Official project",
+          "url": "https://tongminglaic.github.io/AKO/"
+        },
+        {
+          "label": "Code and trajectories",
+          "url": "https://github.com/TongmingLAIC/AKO"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Claude Code; exact underlying model unspecified",
+        "summary": "AKO4ALL exposes a skill; AKO4X maintains per-operator archives and fresh-context search.",
+        "result": "Reports improvements in 9/10 categories, commonly 1.14–1.43×. GDN and DSA cases report 2.30× and 30.71× respectively. These are category-specific measurements from the project."
+      }
+    },
+    {
+      "slug": "kda",
+      "title": "NVIDIA Kernel Design Agents (KDA)",
+      "short_title": "NVIDIA KDA",
+      "year": 2026,
+      "category": "kernel",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Official project",
+          "url": "https://github.com/NVlabs/kda"
+        },
+        {
+          "label": "workflow",
+          "url": "https://github.com/NVlabs/kda/blob/main/docs/agent-flow.md"
+        },
+        {
+          "label": "prompt",
+          "url": "https://github.com/NVlabs/kda/blob/main/prompts/basic-flow.md"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Configurable coding-agent backend",
+        "summary": "Public research → implementation → hardware-validation workflow and prompts.",
+        "result": "Provides an early, reusable implementation of agent-assisted kernel development. The catalog entry describes its workflow and repository rather than a controlled comparative benchmark."
+      }
+    },
+    {
+      "slug": "kernelagent",
+      "title": "KernelAgent: hardware-guided optimization",
+      "short_title": "KernelAgent",
+      "year": 2026,
+      "category": "kernel",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Official project",
+          "url": "https://pytorch.org/blog/kernelagent-hardware-guided-gpu-kernel-optimization-via-multi-agent-orchestration/"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Opus 4.5 in the showcased case",
+        "summary": "NCU profiling, diagnosis, planning and parallel kernel revisions with expert knowledge and memory.",
+        "result": "Reports 2.02× over an earlier correctness loop and a 1.56× geometric mean over default torch.compile, with improvements on 65/100 tasks. The reported 89% roofline figure uses an NCU utilization measure."
+      }
+    },
+    {
+      "slug": "maxkernel",
+      "title": "MaxKernel",
+      "short_title": "MaxKernel",
+      "year": 2026,
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2609.04523v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Gemini 3.1 Pro",
+        "summary": "Autonomous JAX/Pallas kernel search on TPUs, comparing search and human-intervention settings.",
+        "result": "Reports approximately 1.58× over JAX/XLA. On eight tasks with expert kernels, automatic and human implementations reach 2.32× and 2.02× against a common reference. The aggregation clips regressions to 1×. A separate GDN training-step case reports 4.70×."
+      }
+    },
+    {
+      "slug": "atrex",
+      "title": "Atrex / AKA",
+      "short_title": "Atrex / AKA",
+      "year": 2026,
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2607.14541v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "GPT-5.5, Opus 4.7 and multiple large open models",
+        "summary": "Production traces define operator shapes and weights; AKA adds profiling and search for FlyDSL implementations.",
+        "result": "Reports weighted scores of 0.107 for GPT-5.5 and 0.059 for Opus. For Qwen, correctness is 84.8% and FlyDSL coverage is 43.8%; fallback behavior is therefore relevant to interpretation. Metrics describe trace-weighted kernel performance on anonymized hardware."
+      }
+    },
+    {
+      "slug": "kernel-harness",
+      "title": "Harness Engineering for GPU Kernel Optimization",
+      "short_title": "GPU kernel harness",
+      "year": 2026,
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2607.17979v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "GPT-5 family; GPT-5.3-Codex; Opus 4.6 review",
+        "summary": "Compares agent-assisted and fully agent-driven optimization.",
+        "result": "Compares human-assisted and automated search across five task families, with higher performance for the human-assisted setting. The configurations also differ in human direction, model choice and budget allocation."
+      }
+    },
+    {
+      "slug": "experience-graph",
+      "title": "KOPE: Experience Graph for Kernel Optimization",
+      "short_title": "KOPE / Experience Graph",
+      "year": 2026,
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2608.25570v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "GLM-5.2 / DeepSeek-V4-Pro",
+        "summary": "Retrieves structured optimization experience for Ascend CANN kernels.",
+        "result": "Reports pass rate increasing from 60% to 84.6% and token use decreasing from 15.9B to 1.113B. Speed ratios change from 0.0382× to 0.0661× relative to the reference. A separate memory experiment reports 1.434× on 412 valid paired cases, or 38.9% of the total."
+      }
+    },
+    {
+      "slug": "kernelevolve",
+      "title": "KernelEvolve",
+      "short_title": "KernelEvolve",
+      "year": 2025,
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Primary source",
+          "url": "https://arxiv.org/html/2512.23236v4"
+        },
+        {
+          "label": "Official production report (2026)",
+          "url": "https://engineering.fb.com/2026/04/02/developer-tools/kernelevolve-how-metas-ranking-engineer-agent-optimizes-ai-infrastructure/"
+        }
+      ],
+      "publication": {
+        "date": "2025",
+        "actor": "Claude 4.5, GPT-5, CWM and other backends",
+        "summary": "Graph search, retrieved knowledge and hardware feedback for recommendation kernels.",
+        "result": "The 2026 production report describes approximately 25% training and 60% inference improvements in their respective settings. Search, expert input and the model backend operate together in the reported workflow."
+      }
+    },
+    {
+      "slug": "accelopt",
+      "title": "AccelOpt",
+      "short_title": "AccelOpt",
+      "year": 2025,
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2511.15915v2"
+        }
+      ],
+      "publication": {
+        "date": "2025",
+        "actor": "Qwen3-Coder 480B executor; gpt-oss-120b planner",
+        "summary": "Trainium NKI search with cross-task implementation comparisons and memory.",
+        "result": "Reports hardware-peak utilization changes including 49%→61% and 45%→59%. These measurements characterize hardware utilization for the evaluated workloads."
+      }
+    },
+    {
+      "slug": "recursive",
+      "title": "Recursive: first steps toward automated AI research",
+      "short_title": "Recursive",
+      "year": 2026,
+      "category": "recipe",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Primary source",
+          "url": "https://www.recursive.com/articles/first-steps-toward-automated-ai-research"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Research actor undisclosed; small target LMs",
+        "summary": "Searches architecture, training and data-processing code under fixed run budgets.",
+        "result": "Reports NanoChat BPB changing from 0.9372 to 0.9109 and nanoGPT training time from 79.7 to 77.5 seconds. Some targets combine approximately 50M dense parameters with 1–2B sparse hash parameters; actor and target scales are recorded separately."
+      }
+    },
+    {
+      "slug": "rekursiv",
+      "title": "rekursiv.ai: autoautoresearch",
+      "short_title": "rekursiv.ai",
+      "year": 2026,
+      "category": "recipe",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Training recipes & data",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Primary source",
+          "url": "https://rekursiv.ai/blog/autoautoresearch/"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Research actor undisclosed",
+        "summary": "Changes research organization periodically while parallel agents search training recipes.",
+        "result": "Reports 6,164 experiments over three days and a final ten-seed mean BPB of 0.887791. The ten seeds repeat final training; the autonomous search is a separate experimental unit. This project is distinct from Recursive."
+      }
+    },
+    {
+      "slug": "autoresearch",
+      "title": "Karpathy autoresearch",
+      "short_title": "Karpathy autoresearch",
+      "year": 2026,
+      "category": "recipe",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Primary source",
+          "url": "https://raw.githubusercontent.com/karpathy/autoresearch/master/README.md"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Configurable actor; single-GPU small target LM",
+        "summary": "Agent edits train.py, runs a fixed-duration experiment, and retains or reverts by validation BPB.",
+        "result": "Provides a compact research interface with per-experiment time limits and a visible validation objective. Total search budget and held-out evaluation are relevant when comparing configurations."
+      }
+    },
+    {
+      "slug": "specialist-recipes",
+      "title": "Specialist agents for training recipes",
+      "short_title": "Specialist recipes",
+      "year": 2026,
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Training recipes & data",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2605.05724v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Opus 4.7 in all roles",
+        "summary": "Specialist agents combine training ideas using parallel search, shared results and lineage.",
+        "result": "Reports BPB −0.81%, CORE +38.7% relative to 0.1618, and CIFAR training time −4.59% across separate small-model tasks. Each result uses its own objective and baseline."
+      }
+    },
+    {
+      "slug": "posttrainbench",
+      "title": "PostTrainBench",
+      "short_title": "PostTrainBench",
+      "year": 2026,
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Model weights",
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2603.08640v2"
+        },
+        {
+          "label": "Project",
+          "url": "https://posttrainbench.com/"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Frontier CLI agents; target models 1.7–4B",
+        "summary": "Agents find data, train, tune and submit a checkpoint.",
+        "result": "Reports a best weighted score of 23.2, compared with 51.1 for official instruction-tuned models. A local Gemma BFCL case reaches 89% versus 67%. Checkpoint provenance, allowed resources and held-out evaluation define the comparison protocol."
+      }
+    },
+    {
+      "slug": "aibuildai",
+      "title": "AIBuildAI",
+      "short_title": "AIBuildAI",
+      "year": 2026,
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Training recipes & data",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2604.14455v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Opus 4.6 roles; baselines use other models",
+        "summary": "Manager/designer/coder/tuner coordinate seven parallel solution repositories.",
+        "result": "Reports a 63.1% medal rate using public competition thresholds. Research organization, actor models and resource budgets are relevant dimensions when comparing this setting with other research workflows."
+      }
+    },
+    {
+      "slug": "hyra",
+      "title": "Tencent Hunyuan Hyra results",
+      "short_title": "Hyra",
+      "year": 2026,
+      "category": "recipe",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Training recipes & data",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Official project",
+          "url": "https://github.com/Tencent-Hunyuan/Hyra-results"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Research actor configuration not established",
+        "summary": "Publishes research artifacts and selected reproduction scripts across AI tasks.",
+        "result": "Examples include BPB 0.9109→0.9015, training time 77.5→76.4 seconds and SOL score 0.754→0.771. These results cover distinct objectives within the research organization."
+      }
+    },
+    {
+      "slug": "hiloop",
+      "title": "Hiloop: search is enough",
+      "short_title": "Hiloop",
+      "year": 2026,
+      "category": "recipe",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Official project",
+          "url": "https://github.com/hiloopai/search-is-enough"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Research actor undisclosed",
+        "summary": "Continues recipe search from an existing Recursive artifact, with interleaved final evaluation.",
+        "result": "Reports median BPB 0.9016 over 25 interleaved runs, with a best result of 0.8999. Training-clock definitions, caching and artifact ancestry provide context for the run distribution."
+      }
+    },
+    {
+      "slug": "dream-rsi",
+      "title": "Dream-RSI: Recursive Self-Improvement through Evolving Worlds",
+      "short_title": "Dream-RSI",
+      "year": 2026,
+      "date": "2026/09/14",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2609.14858v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Frozen Gemini 3.1 Pro / 3.7 Flash discovery agents",
+        "summary": "Uses offline replay of search trees to revise parent selection, branching and stopping policies, then gathers new trees.",
+        "result": "In the same-model Pro Lasso case, calls decrease from 550 to 317 and mean artifact runtime from 3587.1 to 2931.0 ms. One of six downstream datasets improves. Replay covers recorded branches, and call counts use a different accounting unit from tokens."
+      }
+    },
+    {
+      "slug": "rsiagent",
+      "title": "RSIAgent: Autonomous Exploration for Recursive Self-improvement in New Environments",
+      "short_title": "RSIAgent",
+      "year": 2026,
+      "date": "2026/09/14",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Agent harnesses",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2609.15364v1"
+        },
+        {
+          "label": "Kimi K3 official specifications",
+          "url": "https://www.kimi.com/en/blog/kimi-k3"
+        },
+        {
+          "label": "GLM-5.3 official model card",
+          "url": "https://huggingface.co/zai-org/GLM-5.3"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "GLM-5.3 actor ~753B; Kimi K3 curriculum/verifier 2.8T total / 104B active",
+        "summary": "Task-aware practice, verification and skill/memory updates.",
+        "result": "Reported settings include scores of 71.97→78.98. Update subsets such as 41/82, supporting-model roles and target-aware practice specify the scope of each comparison."
+      }
+    },
+    {
+      "slug": "meta-n",
+      "title": "Meta$^n$: Recursive Self-Improvement through Emergent Depth",
+      "short_title": "Metaⁿ",
+      "year": 2026,
+      "date": "2026/08/25",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2608.24735v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "GPT-5.2 and a separate Gemma4-31B line",
+        "summary": "Recursively composes improver levels while keeping the generator fixed.",
+        "result": "Reports archive-best 0.851, best-chain 0.782 and OpenEvolve 0.814 under different selection rules. LawBench reports 0.784 versus 0.745 at a matched stated budget. Selection policy and recursion depth are separate comparison dimensions."
+      }
+    },
+    {
+      "slug": "hyperagents",
+      "title": "Hyperagents",
+      "short_title": "Hyperagents",
+      "year": 2026,
+      "date": "2026/03/19",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Agent harnesses",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2603.19461v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Sonnet 4.5 improver; domain-specific actors of varying strength",
+        "summary": "Makes both task agent and meta-agent editable and studies improver transfer.",
+        "result": "Studies cross-task reuse and reports five-repeat imp@50≈0.630. This improvement metric is distinct from task accuracy; improver and task-actor configurations are recorded separately."
+      }
+    },
+    {
+      "slug": "gea",
+      "title": "Group-Evolving Agents (GEA)",
+      "short_title": "GEA",
+      "year": 2026,
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Agent harnesses",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2602.04837v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Haiku 4.5 then Sonnet 4.5 actor/improver; o1 reflection",
+        "summary": "Shares patches, trajectories and failures across an evolving population.",
+        "result": "Reports SWE 71.0% versus DGM 56.7%, and Polyglot 88.3% versus 68.3%. Split definitions, aggregation and selection-triggered reevaluation specify the evaluation setting."
+      }
+    },
+    {
+      "slug": "rqgm",
+      "title": "RQGM",
+      "short_title": "RQGM",
+      "year": 2026,
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Agent harnesses",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2606.26294v2"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "GPT-5.5; hybrid Nemotron3-Ultra actor / GPT-5.5 meta-agent",
+        "summary": "Co-evolves agents and evaluators, fixing objectives within epochs and recalibrating between them.",
+        "result": "Coding savings of 1.35–1.72× use blended tokens defined as input + 5×output. A hybrid 13× figure uses GPT-5.5 price equivalents. Reviewer acceptance and factual validation are separate evaluation dimensions."
+      }
+    },
+    {
+      "slug": "sift",
+      "title": "Self Improvement via Fast Tree-search",
+      "short_title": "SIFT",
+      "year": 2026,
+      "date": "2026/09/17",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Agent harnesses"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2609.19526v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "o3-mini / Qwen3-Coder-30B / GPT-5-mini runtime actors; stronger improvers and judges",
+        "summary": "Pairwise code judging, Bradley–Terry ranking and asynchronous tree search over coding-agent implementations.",
+        "result": "A Terminal example reports 29.2%→36.7%. Selected artifacts receive repeated evaluation, and asynchronous execution contributes to wall-time performance. API costs include judges; raw-token accounting and independent search repeats are separate budget dimensions."
+      }
+    },
+    {
+      "slug": "trt",
+      "title": "Test-time Recursive Thinking: Self-Improvement without External Feedback",
+      "short_title": "TRT",
+      "year": 2026,
+      "date": "2026/02/03",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Agent harnesses",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2602.03094v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "o3/o4-mini; gpt-oss-120b and Qwen3-235B",
+        "summary": "Per-problem strategy search, self-ranking and accumulated knowledge.",
+        "result": "At eight rounds × two rollouts, LCB scores are 73.9 versus RSA 70.4 for o4-mini, and 71.9 versus 69.7 for o3. The AIME 100% result uses 30 questions, 64 rounds and voting. The approach operates through test-time search."
+      }
+    },
+    {
+      "slug": "metaskill-evolve",
+      "title": "MetaSkill-Evolve: Recursive Self-Improvement of LLM Agents via Two-Timescale Meta-Skill Evolution",
+      "short_title": "MetaSkill-Evolve",
+      "year": 2026,
+      "date": "2026/07/06",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Agent harnesses",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2607.05297v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Gemma4-31B",
+        "summary": "Evolves reusable skills and the policies that manage them.",
+        "result": "Compared with Single-Level, reports OfficeQA 48.94→55.32, SealQA 37.21→45.26 and ALFWorld 92.31→94.23. These comparisons isolate an equipped baseline within the evaluated model and task settings."
+      }
+    },
+    {
+      "slug": "self-edit-search",
+      "title": "Search over Self-Edit Strategies for LLM Adaptation",
+      "short_title": "Self-Edit Search",
+      "year": 2026,
+      "date": "2026/01/20",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Model weights",
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2601.14532v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Qwen3-8B",
+        "summary": "Searches self-edit templates and next-token-prediction update settings with an archive.",
+        "result": "On 200 validation passages, the archive reaches a peak of 45.1% and later 36.5%. Rewrite starts at 50.3% and reaches 45.6% at iteration two. Iteration and selection rules are necessary context for comparing the trajectories."
+      }
+    },
+    {
+      "slug": "fastkernels",
+      "title": "FastKernels",
+      "short_title": "FastKernels",
+      "year": 2026,
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2605.23215v1"
+        },
+        {
+          "label": "Code",
+          "url": "https://github.com/Snowflake-AI-Research/fastkernels"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Codex / KernelAgent / Dr.Kernel; backend varies by run",
+        "summary": "Captures real kernel interfaces/tensors and evaluates integration in actual backends and distributed contexts.",
+        "result": "Covers 88 targets (48 L1 + 40 L2), mapped to 46 architectures across eight families. Correct-subset geometric speedups are Codex 0.943× (88/88 correct), KernelAgent 0.777× (28/88) and Dr.Kernel 0.527× (8/88). Coverage and speed use different denominators across methods."
+      }
+    },
+    {
+      "slug": "cann-bench",
+      "title": "CANN-Bench",
+      "short_title": "CANN-Bench",
+      "year": 2026,
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper",
+          "url": "https://arxiv.org/abs/2607.20518v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Benchmark; actor depends on submission",
+        "summary": "Ascend operator tasks separating compilation, correctness and performance.",
+        "result": "Defines 53 operators and 1,060 cases, spanning vector/cube coverage and hardware-aware analytical bounds. Success rate, speed and coverage describe different aspects of the evaluation."
+      }
+    },
+    {
+      "slug": "sol-execbench",
+      "title": "NVIDIA SOL-ExecBench",
+      "short_title": "SOL-ExecBench",
+      "year": 2026,
+      "category": "evaluation",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Official project",
+          "url": "https://research.nvidia.com/benchmarks/sol-execbench/blog/introducing-sol-execbench"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Benchmark; actor depends on submission",
+        "summary": "Real-model kernels with executable validation and hardware speed-of-light references.",
+        "result": "Covers 235 kernels from 124 models on Blackwell, including forward/backward operations and BF16/FP8/NVFP4. The score maps the reference to approximately 0.5 and an analytical bound to 1. Search budgets vary by entrant."
+      }
+    },
+    {
+      "slug": "autoresearchexam",
+      "title": "AutoResearchExam",
+      "short_title": "AutoResearchExam",
+      "year": 2026,
+      "category": "evaluation",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Official project",
+          "url": "https://benchmarks.bespokelabs.ai/autoresearchexam/"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Research-agent configurations vary",
+        "summary": "A 24-hour ML-research protocol with private holdout evaluation.",
+        "result": "Tests how improvements on visible validation transfer to held-out evaluation. The leaderboard changes over time, and task coverage extends beyond inference serving."
+      }
+    },
+    {
+      "slug": "open-ended-research",
+      "title": "Can AI agents conduct open-ended AI research? Early evidence from two case studies",
+      "short_title": "Open-ended AI research",
+      "year": 2026,
+      "date": "2026/07/29",
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2607.27191v2"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Opus 4.8 + OpenClaw; GPT-5.6 Sol Ultra + Codex follow-up",
+        "summary": "Agents tackle two previously unpublished research problems assessed by the original researchers.",
+        "result": "Presents two previously unpublished research problems with assessments from the original researchers. The case studies discuss execution, experiment design, research judgment and redirection within the evaluated workflows."
+      }
+    },
+    {
+      "slug": "benchmark-poisoning",
+      "title": "Reflections on Trusting Trust, Revisited: Contaminating Self-Modifying AI Coding Agents with Poisoned Benchmarks",
+      "short_title": "Benchmark poisoning",
+      "year": 2026,
+      "date": "2026/09/15",
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2609.17817v1"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Includes Sonnet 4.5, Qwen3.5-397B and gpt-oss-120b",
+        "summary": "Studies how manipulated benchmarks and feedback decouple self-modification scores from capability.",
+        "result": "Studies evaluator isolation and artifact provenance when an agent can interact with its tests. Attack success and improvements on the underlying task are separate measured outcomes."
+      }
+    },
+    {
+      "slug": "last-ai",
+      "title": "The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement",
+      "short_title": "The Last AI",
+      "year": 2026,
+      "date": "2026/09/10",
+      "category": "concept",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Field-wide frameworks"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2609.11873v2"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Conceptual work",
+        "summary": "Discusses organizations and pathways for continuing self-improvement.",
+        "result": "Develops a research agenda for self-improving AI and proposed feedback loops, providing conceptual context for empirical work in the collection."
+      }
+    },
+    {
+      "slug": "rsi-survey",
+      "title": "Recursive Self-Improvement in AI: From Bounded Self-Refinement to Autonomous Research Loops",
+      "short_title": "RSI survey",
+      "year": 2026,
+      "date": "2026/07/08",
+      "category": "concept",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Field-wide frameworks"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2607.07663v2"
+        }
+      ],
+      "publication": {
+        "date": "2026",
+        "actor": "Survey",
+        "summary": "Organizes improvement targets, mechanisms and historical work.",
+        "result": "Organizes terminology, improvement targets, mechanisms and historical work. Training, search, memory and coordination provide distinct lenses for navigating the literature."
+      }
+    },
+    {
+      "slug": "dgm",
+      "title": "Darwin Godel Machine: Open-Ended Evolution of Self-Improving Agents",
+      "short_title": "DGM",
+      "year": 2025,
+      "date": "2025/05/29",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Agent harnesses"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2505.22954v3"
+        }
+      ],
+      "publication": {
+        "date": "2025",
+        "actor": "Sonnet 3.5 improver; Sonnet 3.5/o3-mini runtime actors",
+        "summary": "Archive-based search over a coding agent’s own tools and implementation.",
+        "result": "After 80 rounds, reports SWE subset performance of 20%→50%, compared with 39% for a fixed improver and 39.7% for greedy search. Full Polyglot changes from 14.2% to 30.7%; the search subset changes from 14% to 38%. These results use the paper’s actor and harness configurations."
+      }
+    },
+    {
+      "slug": "sica",
+      "title": "A Self-Improving Coding Agent",
+      "short_title": "SICA",
+      "year": 2025,
+      "date": "2025/04/21",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Agent harnesses"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2504.15228v2"
+        }
+      ],
+      "publication": {
+        "date": "2025",
+        "actor": "Mostly Sonnet 3.5v2; o3-mini reasoning role",
+        "summary": "Modifies its coding harness using prior run feedback and reevaluation.",
+        "result": "Uses fixed 50-question SWE/LCB subsets and synthetic tasks. SWE rises from 17% to a peak of 53%, with approximately $7,000 spent across 15 iterations; LCB changes from 0.65 to a final 0.71, with regressions along the trajectory. Tool changes are part of the evolving agent."
+      }
+    },
+    {
+      "slug": "stop",
+      "title": "Self-Taught Optimizer (STOP): Recursively Self-Improving Code Generation",
+      "short_title": "STOP",
+      "year": 2023,
+      "date": "2023/10/03",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2310.02304v3"
+        }
+      ],
+      "publication": {
+        "date": "2023",
+        "actor": "GPT-4-era experiments",
+        "summary": "Rewrites an improver program and applies it to other programs.",
+        "result": "Studies editable optimizers on noisy parity and transfer to five task families. Table 1 reports 3-SAT meta-utility changing from 21.2% to 75.1%. The tasks provide an early setting for studying optimizer self-modification."
+      }
+    },
+    {
+      "slug": "absolute-zero",
+      "title": "Absolute Zero: Reinforced Self-play Reasoning with Zero Data",
+      "short_title": "Absolute Zero",
+      "year": 2025,
+      "date": "2025/05/06",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Model weights",
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2505.03335v3"
+        }
+      ],
+      "publication": {
+        "date": "2025",
+        "actor": "Primarily Qwen2.5/Coder7B; 3B/ 14B and Llama8B extensions",
+        "summary": "Generates executable tasks and verification signals for RL weight updates.",
+        "result": "Reports Coder-7B aggregate performance of 40.2→50.4, weighting code and math averages equally. A 7B ablation compares solver-only 45.4 with full-system 46.8. The trained model and larger comparison models have distinct roles."
+      }
+    },
+    {
+      "slug": "seal",
+      "title": "Self-Adapting Language Models",
+      "short_title": "SEAL",
+      "year": 2025,
+      "date": "2025/06/12",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Model weights",
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2506.10943v2"
+        }
+      ],
+      "publication": {
+        "date": "2025",
+        "actor": "Adaptation actors 1–7B; GPT-4.1 is a data-generation comparison",
+        "summary": "Generates adaptation data/instructions and evaluates gradient-based updates.",
+        "result": "For single-passage QA, reports raw-text training 33.5, base-generated data 39.7, SEAL 47.0 and GPT-4.1-generated data 46.3. At 200 documents, the corresponding generated-data comparison is 59.4 versus 58.2. These are small-model adaptation experiments."
+      }
+    },
+    {
+      "slug": "alphaevolve",
+      "title": "AlphaEvolve: A coding agent for scientific and algorithmic discovery",
+      "short_title": "AlphaEvolve",
+      "year": 2025,
+      "date": "2025/06/16",
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-20",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Paper (reviewed version)",
+          "url": "https://arxiv.org/abs/2506.13131v1"
+        }
+      ],
+      "publication": {
+        "date": "2025",
+        "actor": "Gemini 2.0 Pro / Flash",
+        "summary": "Executable program evaluation with evolutionary archives; applied to AI infrastructure.",
+        "result": "Reports 48 scalar multiplications for 4×4 complex matrix multiplication. A separate Gemini-training case averages a 23% kernel improvement and approximately 1% overall training-time improvement. The workflow uses fixed proposers to search over executable code."
+      }
+    },
+    {
+      "slug": "parallelkernelbench",
+      "title": "ParallelKernelBench: Can LLMs Write Fast Multi-GPU Kernels?",
+      "short_title": "ParallelKernelBench",
+      "year": 2026,
+      "date": "2026-06",
+      "category": "kernel-benchmark",
+      "source_type": "paper",
+      "reviewed": "2026-09-21",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Author blog (June 23)",
+          "url": "https://www.together.ai/blog/parallelkernelbench"
+        },
+        {
+          "label": "Official repository",
+          "url": "https://github.com/togethercomputer/ParallelKernelBench"
+        },
+        {
+          "label": "Paper",
+          "url": "https://www.alphaxiv.org/abs/2606.parallel-kernel-bench"
+        }
+      ],
+      "publication": {
+        "date": "2026-06",
+        "actor": "GPT-5.5, Opus 4.7, Gemini 3Pro and large open models",
+        "summary": "PyTorch+NCCL reference, tensor/rank layout and hardware topology → custom multi-GPU implementation.",
+        "details": [
+          [
+            "Task and search space",
+            "May fuse communication with computation, change buffer layouts and implement direct device-side transfers while preserving per-rank semantics. The public prompts encourage symmetric memory and compute/communication overlap."
+          ],
+          [
+            "Results and metrics",
+            "87 tasks. GPT-5.5: 28/87 correct and 22/87 faster in one attempt; 36/87 and 27/87 across three attempts. Gemini 3Pro with feedback reaches 35/87 correct and 26/87 faster. Calls/steps do not match token costs."
+          ],
+          [
+            "Evaluation protocol",
+            "A NeMo-RL GRPO vocab-parallel log-prob kernel combines filtering, normalization and token extraction on 4×H100s (V=32,000; top-k10/top-p0.9). Per-rank comparison, randomized inputs and timeout/deadlock handling matter. These are kernel results, not whole-training speedups."
+          ],
+          [
+            "Evaluation context",
+            "The review covers the official blog, README and prompts.toml; the paper PDF was unavailable during review. Four-H100 experiments refer to showcased cases, while repository configurations vary."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "kernelbench",
+      "title": "KernelBench: Can LLMs Write Efficient GPU Kernels?",
+      "short_title": "KernelBench",
+      "year": 2025,
+      "date": "2025-02",
+      "category": "kernel-benchmark",
+      "source_type": "paper",
+      "reviewed": "2026-09-21",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2502.10517v1"
+        },
+        {
+          "label": "Official code",
+          "url": "https://github.com/ScalingIntelligence/KernelBench"
+        }
+      ],
+      "publication": {
+        "date": "2025-02",
+        "actor": "o1, DeepSeek-R1/V3, Claude 3.5, GPT-4o and Llama variants",
+        "summary": "PyTorch Model plus input/initialization generators → interface-compatible ModelNew.",
+        "details": [
+          [
+            "Task and search space",
+            "250 tasks: 100 primitives, 100 operator sequences and 50 model architectures. CUDA/PTX/Triton/CUTLASS and related implementation techniques are allowed."
+          ],
+          [
+            "Results and metrics",
+            "fast_p counts the fraction of all tasks that are correct and exceed a speed threshold. The v1 study uses L40S and reports limited faster-than-eager coverage; current leaderboard results are separate."
+          ],
+          [
+            "Evaluation protocol",
+            "Fusion of convolution, bias and activation illustrates Level 2; Level 3 model forward passes do not include request scheduling or complete serving. The original five-random-input test is a starting point, not a full semantic contract."
+          ],
+          [
+            "Evaluation context",
+            "Dtype, TF32 settings, compiler mode, shape distribution and input coverage specify the evaluation contract. Fixed-shape experiments support workload-specific implementations."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "flashinfer-bench",
+      "title": "FlashInfer-Bench: Building the Virtuous Cycle for AI-driven LLM Systems",
+      "short_title": "FlashInfer-Bench",
+      "year": 2026,
+      "date": "2026-01",
+      "category": "kernel-benchmark",
+      "source_type": "paper",
+      "reviewed": "2026-09-21",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2601.00227v1"
+        },
+        {
+          "label": "Official repository",
+          "url": "https://github.com/flashinfer-ai/flashinfer-bench"
+        },
+        {
+          "label": "Earlier announcement",
+          "url": "https://flashinfer.ai/2025/10/21/flashinfer-bench.html"
+        }
+      ],
+      "publication": {
+        "date": "2026-01; project 2025-10",
+        "actor": "GPT-5, o3, Gemini 2.5Pro, Opus 4.1",
+        "summary": "Kernel Definition + traced Workload → Solution + measured Trace, with optional serving integration.",
+        "details": [
+          [
+            "Task and search space",
+            "Eight kernel types, 41 definitions and 1,600 workloads in v1. A runtime apply() dispatcher chooses validated implementations for matching inputs, with fallback."
+          ],
+          [
+            "Results and metrics",
+            "240 solutions / 9,600 evaluation records; B200 kernel tests. The Llama3.1-8B/SGLang substitution example demonstrates integration, not universal improvement: at batch 64 reported end-to-end times are 934/939/1055 ms for FlashInfer/Gemini/GPT substitutions."
+          ],
+          [
+            "Evaluation protocol",
+            "fused_add_rmsnorm_h4096 is swapped into a real serving path. Separate kernel latency, dispatch overhead and end-to-end request latency; identical-implementation substitution reports<0.8% end-to-end overhead."
+          ],
+          [
+            "Evaluation context",
+            "Performance is recorded by request count, shape and configuration. Kernel-family coverage and live leaderboard entries vary; the reviewed example uses a small number of requests per configuration."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "backendbench",
+      "title": "BackendBench: An Evaluation Suite for Testing How Well LLMs and Humans Can Write PyTorch Backends",
+      "short_title": "BackendBench",
+      "year": 2025,
+      "date": "2025-06*",
+      "category": "kernel-benchmark",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-21",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Official repository",
+          "url": "https://github.com/meta-pytorch/BackendBench"
+        },
+        {
+          "label": "Official correctness protocol",
+          "url": "https://github.com/meta-pytorch/BackendBench/blob/main/docs/correctness.md"
+        }
+      ],
+      "publication": {
+        "date": "2025-06*; inspected 2026-09",
+        "actor": "Configurable; exact Claude/ChatGPT versions not consistently specified",
+        "summary": "PyTorch operator interfaces and test suites → a dynamically registered backend.",
+        "details": [
+          [
+            "Task and search space",
+            "Directory-based implementations override operators without rewriting model code. OpInfo/FACTO test edge cases; real model shapes support performance evaluation. Official documentation describes 271 correctness operators and 124 performance operators."
+          ],
+          [
+            "Results and metrics",
+            "The documentation reports most of 84 generated implementations at 70–100% of PyTorch speed, a few around 1.2×. A nanoGPT forward replacement changes numerics and is about 2× slower. The useful artifact is the integration/validation framework."
+          ],
+          [
+            "Evaluation protocol",
+            "The contract includes broadcasting, strides, dtype, in-place/out behavior and exceptional values—not just one tensor shape. Model execution and convergence remain additional checks."
+          ],
+          [
+            "Evaluation context",
+            "The operator suites cover specified test contracts, with model execution and manual review providing additional checks. June denotes repository creation rather than a confirmed paper release."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "kernelbench-verified",
+      "title": "KernelBench-Verified: Do LLM-Generated Kernels Actually Beat PyTorch?",
+      "short_title": "KernelBench-Verified",
+      "year": 2026,
+      "date": "2026-07†",
+      "category": "kernel-benchmark",
+      "source_type": "paper",
+      "reviewed": "2026-09-21",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.16241v1"
+        },
+        {
+          "label": "Official code",
+          "url": "https://github.com/facebookresearch/kernel_bench_verified"
+        }
+      ],
+      "publication": {
+        "date": "2026-07†",
+        "actor": "Seven frontier models; H200; single-turn best-of-5",
+        "summary": "KernelBench tasks with a specified TF32 baseline, hidden input distributions and memory measurement.",
+        "details": [
+          [
+            "Task and search space",
+            "Four same-shape input distributions test semantic shortcuts; three constant-output tasks are excluded, leaving 247. No feedback loop is implied by five independent samples."
+          ],
+          [
+            "Results and metrics",
+            "GPT-5.5 correct-subset geometric speedup 0.88× under the main protocol versus 1.43× in the stated standard comparison; 53% of tasks still beat reference. BF16 Level 2 reaches 1.63×, so the negative conclusion is not universal across precision settings."
+          ],
+          [
+            "Evaluation protocol",
+            "A ReLU implementation that returns its input for a known positive-input test fails when signs change. Report correctness, fast_1, latency and peak memory together."
+          ],
+          [
+            "Evaluation context",
+            "Uses four input distributions with a specified TF32 contract. The PDF and identifier indicate July, while indexed submission metadata indicates June; the release month remains unresolved."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "tritonbench",
+      "title": "TritonBench: Benchmarking Large Language Model Capabilities for Generating Triton Operators",
+      "short_title": "TritonBench",
+      "year": 2025,
+      "date": "2025-02",
+      "category": "kernel-benchmark",
+      "source_type": "paper",
+      "reviewed": "2026-09-21",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2502.14752v1"
+        },
+        {
+          "label": "Official code (THUNLP)",
+          "url": "https://github.com/thunlp/TritonBench"
+        }
+      ],
+      "publication": {
+        "date": "2025-02",
+        "actor": "o1, DeepSeek-R1, GPT-4o, Claude 3.5 and smaller baselines; A100",
+        "summary": "Two entry points: descriptions/interfaces for real Triton operators, and PyTorch composite programs.",
+        "details": [
+          [
+            "Task and search space",
+            "184 G tasks and 166 T tasks separate recovery of expert operator behavior from high-level program translation. API-call validity and execution correctness are evaluated separately."
+          ],
+          [
+            "Results and metrics",
+            "Example: o1 one-shot execution accuracy 23.91% on G; this is not the fraction beating expert kernels. G uses real Triton references while T uses PyTorch, so speed ratios have different meanings."
+          ],
+          [
+            "Evaluation protocol",
+            "Useful for separating interface understanding, semantic implementation and efficient code generation. Public-source tasks also create contamination questions."
+          ],
+          [
+            "Evaluation context",
+            "The entry refers to the THUNLP paper, distinct from the meta-pytorch project of the same name. Results use the historical actor configuration and one GPU; other hardware and model generations define separate settings."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "multikernelbench",
+      "title": "MultiKernelBench: A Multi-Platform Benchmark for Kernel Generation",
+      "short_title": "MultiKernelBench",
+      "year": 2025,
+      "date": "2025-07",
+      "category": "kernel-benchmark",
+      "source_type": "paper",
+      "reviewed": "2026-09-21",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2507.17773v1"
+        },
+        {
+          "label": "Official code",
+          "url": "https://github.com/wzzll123/MultiKernelBench"
+        }
+      ],
+      "publication": {
+        "date": "2025-07",
+        "actor": "DeepSeek-V3/R1, Qwen3-235B, Sonnet 4, GPT-4o and a 32B baseline",
+        "summary": "Shared semantic tasks plus platform instructions → CUDA, AscendC or Pallas implementations.",
+        "details": [
+          [
+            "Task and search space",
+            "285 tasks / 14 categories, with a backend abstraction for device setup, compilation, evaluation and cleanup. Tests cover L20, Ascend910B2 and TPUv2-8; cross-platform does not mean distributed multi-GPU."
+          ],
+          [
+            "Results and metrics",
+            "Compilation, correctness and fast@p are separate. In-category examples affect success; no single mixed-platform speedup is meaningful."
+          ],
+          [
+            "Evaluation protocol",
+            "An Ascend task can require host code, tiling, device implementation and glue, making the deliverable broader than a CUDA function."
+          ],
+          [
+            "Evaluation context",
+            "Version 1 uses five random inputs with atol=rtol=1e-2. Other precision requirements and subsequent platform changes define separate evaluation settings."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "kernelbench-x",
+      "title": "KernelBench-X: A Comprehensive Benchmark for Evaluating LLM-Generated GPU Kernels",
+      "short_title": "KernelBench-X",
+      "year": 2026,
+      "date": "2026-05",
+      "category": "kernel-benchmark",
+      "source_type": "paper",
+      "reviewed": "2026-09-21",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2605.04956v1"
+        },
+        {
+          "label": "Official code",
+          "url": "https://github.com/BonnieW05/KernelBenchX"
+        }
+      ],
+      "publication": {
+        "date": "2026-05",
+        "actor": "DeepSeek-V3.2-Chat for GEAK/KernelAgent; other model configurations vary",
+        "summary": "176 tasks in 15 categories with shared interface, reference and constraints.",
+        "details": [
+          [
+            "Task and search space",
+            "Adapters preserve each method’s generation process while a common pipeline records compilation, semantic failures and performance across six NVIDIA GPU types."
+          ],
+          [
+            "Results and metrics",
+            "46.6% of correct kernels are slower than eager. One GEAK analysis raises compile rate 52.3→68.8% while correct-subset mean speedup falls 1.58→1.44×; the subset changes, so this does not mean every repaired kernel slowed down."
+          ],
+          [
+            "Evaluation protocol",
+            "Category-level analysis separates local arithmetic from fusion, coordination and quantization problems. Hardware transfer needs per-machine baselines, not one global latency denominator."
+          ],
+          [
+            "Evaluation context",
+            "Actor and search budgets differ across the reported settings. Software-stack versions require clarification for reproduction; the entry also provides a taxonomy of evaluation conditions."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "aide2",
+      "title": "AIDE²: Recursive Self-Improvement of AI Research Agents",
+      "short_title": "AIDE²",
+      "year": 2026,
+      "date": "2026-09-22",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2609.26457v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2609.26457v1"
+        },
+        {
+          "label": "Weco technical blog (earlier results)",
+          "url": "https://www.weco.ai/blog/first-evidence-of-recursive-self-improvement"
+        }
+      ],
+      "publication": {
+        "date": "2026-09-22",
+        "scope": "Research-agent code evolution",
+        "actor": "Outer loop: Claude Opus 4.7; inner loop: Gemini 3 Flash",
+        "summary": "Rewrites a research agent under fixed evaluation budgets and tests the resulting agents on unseen research tasks.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "An outer agent proposes code changes to an inner research agent. Selection uses private scores across heterogeneous tasks; each accepted version becomes the next editable incumbent."
+          ],
+          [
+            "Results and comparison",
+            "The paper reports seven accepted improvements during an eight-day run and transfer to four held-out benchmarks. On a separate kernel task family, reported reward hacking falls from 55% to 32%, versus 39% for the human-engineered agent."
+          ],
+          [
+            "Evaluation context",
+            "The ignition test compares two outer-loop agents across three seeds per arm. Noise and cost prevent a decisive superiority claim. The earlier company blog reports different reward-hacking percentages; the figures here follow paper v1."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "rrsi",
+      "title": "RRSI: Regularized Recursive Self-Improvement of Agent Harnesses",
+      "short_title": "RRSI",
+      "year": 2026,
+      "date": "2026-09-21",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2609.24972v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2609.24972v1"
+        },
+        {
+          "label": "Official code",
+          "url": "https://github.com/google-research/rrsi"
+        }
+      ],
+      "publication": {
+        "date": "2026-09-21",
+        "scope": "Regularized harness evolution",
+        "actor": "Claude Opus 4.8 frozen policy; additional Gemini-family transfer experiments",
+        "summary": "Constrains harness edits and candidate acceptance to improve transfer beyond the evolution tasks.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Regularizes proposal sparsity, evidence-based editing, complexity and noise-aware acceptance. Baselines share the initial harness, frozen policy, evolution split and candidate budget."
+          ],
+          [
+            "Results and comparison",
+            "On agentic workspace tasks, out-of-distribution average rises from 39.7 to 43.6. Removing acceptance regularizers raises the evolution score but reduces this average to 41.0; removing both regularizer groups gives 40.3."
+          ],
+          [
+            "Evaluation context",
+            "The OOD average combines JobBench, GDPval and APEX-Agents. Separate coding and engineering-design evaluations use task tests or simulators; workspace tasks use model judges."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "kernelarc",
+      "title": "KernelArc: A Multi-Agent Framework for GPU Kernel Optimization",
+      "short_title": "KernelArc",
+      "year": 2026,
+      "date": "2026-08-17",
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Kernel code",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.17071v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.17071v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-17",
+        "scope": "Shared-memory kernel search",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "target": "NVIDIA H100 and B200",
+        "summary": "Coordinates specialized agents through shared conclusions and deterministic benchmark guards.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Parallel strategies share validated conclusions and read-only state. Plateau-triggered drafting broadens search; correctness and timing remain controlled by deterministic tooling."
+          ],
+          [
+            "Results and comparison",
+            "A fixed-shape H100 BF16 GEMM study reaches 766 TFLOPS, 3.2% above its matched cuBLAS baseline. On SOL-ExecBench L1-030, the reported trajectory moves from 0.441 to 0.481 SOL; fixed-candidate-budget ablations examine sharing."
+          ],
+          [
+            "Evaluation context",
+            "The SOL evaluation samples one task from each of four categories, not the full 235-task suite. The GEMM result is for one shape with a supplied optimization playbook. Leaderboard positions refer to dated snapshots."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "kernelopt",
+      "title": "KernelOPT: Dispatch-Aware Agentic Search for GPU Kernel Optimization",
+      "short_title": "KernelOPT",
+      "year": 2026,
+      "date": "2026-09-24",
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2609.30059v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2609.30059v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-09-24",
+        "scope": "Compiler-integrated kernel search",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Optimizes generated Triton kernels while retaining vendor-library dispatch and checking the reconstructed model.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Five profiling-guided agents target compiler-generated sub-kernels. Static checks, multi-seed correctness, model-level verification and performance gates determine acceptance; rejected changes fall back to the compiler baseline."
+          ],
+          [
+            "Results and comparison",
+            "Across 250 KernelBench problems, all-problem geometric-mean speedups over torch.compile are 1.40×, 1.15× and 1.07× for Levels 1–3. The paper reports 94 optimized problems and 1.23× overall geometric mean."
+          ],
+          [
+            "Evaluation context",
+            "The denominators include unchanged cases. Vendor GEMM and convolution dispatch are preserved, so this tests optimization within the compiler decomposition rather than unrestricted replacement of every operation."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "compiler-grounded-triton",
+      "title": "Compiler-Grounded Hierarchical Diagnosis for LLM-Based Triton Kernel Optimization",
+      "short_title": "Compiler-Grounded Hierarchical Diagnosis for LLM-Based Triton Kernel Optimization",
+      "year": 2026,
+      "date": "2026-07-25",
+      "category": "kernel",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Kernel code"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.23089v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.23089v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-25",
+        "scope": "Compiler-grounded NPU optimization",
+        "actor": "DeepSeek V4 Pro through OpenCode",
+        "target": "Ascend 950 NPU",
+        "summary": "Escalates from profiling to intermediate representations and compiler-source analysis when shallow diagnostics are insufficient.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "An OpenCode agent records evidence and validates each rewrite. The workflow moves from pattern triage to profiling, IR attribution and backend analysis."
+          ],
+          [
+            "Results and comparison",
+            "On 37 successfully converted operators, initial-to-optimized Triton speedup is 4.35× geometric mean and 2.73× median; 22/37 exceed 2×. Five sampled cases per operator produce 185 optimization cases."
+          ],
+          [
+            "Evaluation context",
+            "Failed Torch-to-Triton conversions are excluded. The denominator is the initial Triton implementation, not a uniformly expert-tuned baseline. The paper reserves causal decomposition of the diagnostic hierarchy for future controlled experiments."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "llm4llm",
+      "title": "LLM4LLM: Bridging Kernel Benchmarks and Real Deployment via Closed-Loop Agentic Optimization",
+      "short_title": "LLM4LLM",
+      "year": 2026,
+      "date": "2026-08-22",
+      "category": "system",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Systems code & policies"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.21836v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.21836v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-22",
+        "scope": "Model-integrated inference optimization",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "target": "A100/H100; transformer, Mamba and RecurrentGemma workloads",
+        "summary": "Selects code changes by their behavior inside a target inference workload.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Extracts phase-aware tasks from an inference script, searches with episodic experience and accepts patches after model-integrated correctness and latency checks."
+          ],
+          [
+            "Results and comparison",
+            "Across ten language-model workloads, reported end-to-end geometric-mean speedups over eager execution are 3.91× on A100 and 6.98× on H100. Separate attention-only and mixer-only comparisons use FlashAttention and Mamba fast paths."
+          ],
+          [
+            "Evaluation context",
+            "The large end-to-end ratios use eager PyTorch as the denominator. Isolated kernel results use a different scope; neither should be read as a uniform speedup over production serving engines."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "kernelgenbench",
+      "title": "KernelGenBench: A Multi-Source and Multi-Chip Benchmark for LLM-based Kernel Generation",
+      "short_title": "KernelGenBench",
+      "year": 2026,
+      "date": "2026-07-22",
+      "category": "kernel-benchmark",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Kernel code",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.27231v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.27231v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-22",
+        "scope": "Multi-source and hardware-portability evaluation",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Measures kernel correctness, performance and generation cost across operator sources and accelerators.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "The multi-source track contains 210 operators from ATen, vLLM and cuBLAS-related tasks. The multi-chip track uses a 110-operator subset across six hardware platforms, with sandboxing and anti-evasion checks."
+          ],
+          [
+            "Results and comparison",
+            "The evaluation consumes over 15 billion tokens. Specialized agents average 5.11 million tokens per successful operator; AutoKernel correctness drops from 87% on NVIDIA to 25% on the anonymized Platform E."
+          ],
+          [
+            "Evaluation context",
+            "Cost per successful operator includes a success denominator. Hardware and operator-source changes alter difficulty, so portability and cost should accompany headline speedups; unnamed platforms remain unnamed."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "aar-alignment",
+      "title": "Automated Researchers Can Reliably Mitigate Alignment Failures",
+      "short_title": "Automated Researchers Can Reliably Mitigate Alignment Failures",
+      "year": 2026,
+      "date": "2026-08-28",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.28945v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.28945v1"
+        },
+        {
+          "label": "Anthropic research blog",
+          "url": "https://alignment.anthropic.com/2026/automated-alignment-researchers/"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-28",
+        "scope": "Automated alignment post-training",
+        "actor": "Claude Opus 4.8 researchers; separate frontier-scale experiment uses Claude Sonnet 5",
+        "summary": "Searches training methods and data for ten measured alignment-failure categories while checking general capabilities.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Researchers propose methods, run bounded post-training and use separate evaluation. Stronger-model behavioral distillation is disallowed; methods that substantially degrade capability are rejected."
+          ],
+          [
+            "Results and comparison",
+            "The study reports transfer to held-out benchmarks, multi-turn audits and larger target models. The comparison recruits 28 experienced humans, each allowed up to eight hours to propose one-shot methods."
+          ],
+          [
+            "Evaluation context",
+            "The human comparison concerns idea proposals under this protocol, not a matched team running an unrestricted research program. The ten measured failure categories do not cover overall alignment."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "co-harness",
+      "title": "Co-Harness: Co-Evolving Harnesses and Model Weights for LLM Agents",
+      "short_title": "Co-Harness",
+      "year": 2026,
+      "date": "2026-07-17",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Training recipes & data",
+        "Agent harnesses"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.22688v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.22688v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-17",
+        "scope": "Alternating harness and weight updates",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "target": "Qwen3-8B and Qwen3-32B; AIME24, AIME25 and HMMT25",
+        "summary": "Alternates validated harness edits with supervised learning from trajectories generated by the improved harness.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "HarnessCritic diagnoses failures and proposes local changes; ModelAlignLoop then fine-tunes the model. The core study runs two rounds after an initially evolved, unaligned harness."
+          ],
+          [
+            "Results and comparison",
+            "Table 6 reports mean accuracy of 58.5%, 73.5% and 78.9% at rounds 0–2 across two model sizes and three math benchmarks. The human-designed static-harness mean is 54.2%."
+          ],
+          [
+            "Evaluation context",
+            "The combined intervention changes both weights and harness. These comparisons do not independently identify each component’s contribution. A separate 200+ hour case study illustrates longer autonomous operation."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "frontis-ma1",
+      "title": "Frontis-MA1: Training an AI4AI Model towards Recursive Self-Improvement in Machine Learning Engineering",
+      "short_title": "Frontis-MA1",
+      "year": 2026,
+      "date": "2026-07-30",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.28568v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.28568v1"
+        },
+        {
+          "label": "Official code",
+          "url": "https://github.com/FrontisAI/OpenRSI"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-30",
+        "scope": "Execution-grounded research-agent training",
+        "actor": "Frontis-MA1-35B; additional 30B replication",
+        "summary": "Trains reusable program-evolution operators and composes them into long-horizon machine-learning search.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "OpenMLE connects execution environments, SFT/RL and Draft, Improve, Debug and Crossover operators. The trained model is evaluated with base and enhanced evolutionary harnesses."
+          ],
+          [
+            "Results and comparison",
+            "On MLE-Bench Lite, medal average rises from 39.39% to 60.61% under the same OpenMLE-Evo harness, reaching 71.21% with Evo-Max. NatureBench Lite swaps separately test model and harness transfer."
+          ],
+          [
+            "Evaluation context",
+            "The reported task budget is 12 hours on one RTX 4090 capped at 12 GB VRAM. The 71.21% result includes enhanced search and experience priors; it is not the isolated weight-training effect."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "rsibench-data",
+      "title": "RSIBench-Data: Benchmarking Data-Centric Research for Recursive Self-Improvement",
+      "short_title": "RSIBench-Data",
+      "year": 2026,
+      "date": "2026-07-28",
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Training recipes & data",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.25886v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.25886v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-28",
+        "scope": "Data-research protocol",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Isolates training-data research by holding the model, training infrastructure and evaluation stack fixed.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Research agents form capability hypotheses, construct training data, inspect checkpoint feedback and select a final checkpoint under a bounded budget. Traces preserve the research decisions."
+          ],
+          [
+            "Results and comparison",
+            "The paper reports improvement over the first valid attempt in 58.33% of settings. Among searches continuing beyond their observed peak, 78.26% finish with a lower-scoring final attempt; the rest recover the same peak."
+          ],
+          [
+            "Evaluation context",
+            "The post-peak statistic is conditional on continuing search, not all runs. Reporting best-found and selected-final checkpoints separately makes candidate discovery and checkpoint retention distinguishable."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "self-improve-fragility",
+      "title": "On the Fragility of Self-Improving Agents: Variance, Task Order, and Underspecification",
+      "short_title": "On the Fragility of Self-Improving Agents",
+      "year": 2026,
+      "date": "2026-08-18",
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Memory & skills",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.18066v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.18066v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-18",
+        "scope": "Repeated-run and task-order evaluation",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Tests how memory-based agent improvements depend on random runs, curriculum and environmental specifications.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Re-evaluates two memory methods across multiple runs and shuffled task streams, then studies more explicit task rubrics and environment feedback during memory construction."
+          ],
+          [
+            "Results and comparison",
+            "In the reported ReasoningBank comparison, a +1.5 percentage-point gain under default ordering becomes a 4.5-point loss under shuffled orders. The best-to-worst run gap expands from 4.4 points for the baseline to 7.8 with memory."
+          ],
+          [
+            "Evaluation context",
+            "These results concern the evaluated agents and task streams. Better specifications partly recover performance; they do not establish that memory is uniformly harmful."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "rethinking-harness-eval",
+      "title": "Rethinking the Evaluation of Harness Evolution for Agents",
+      "short_title": "Rethinking the Evaluation of Harness Evolution for Agents",
+      "year": 2026,
+      "date": "2026-07-14",
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.12227v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.12227v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-14",
+        "scope": "Budget-matched harness evaluation",
+        "actor": "Claude Opus 4.6 and GPT-5.4-family configurations",
+        "summary": "Compares harness evolution with direct sampling and refinement under explicit feedback and compute conditions.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Terminal-Bench 2.1 experiments distinguish search on evaluation tasks from transfer to held-out tasks, and compare against parallel sampling and sequential refinement."
+          ],
+          [
+            "Results and comparison",
+            "The held-out analysis reports a 1.2-point gain for one model and no improvement for GPT-5.4, averaging 0.6 points. Harness evolution does not consistently outperform simpler test-time search in the studied settings."
+          ],
+          [
+            "Evaluation context",
+            "The finding is protocol-specific. It motivates reporting search/evaluation overlap and matched-budget baselines, rather than ranking all harness-evolution methods by one study."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "knowledge-centric",
+      "title": "Knowledge-Centric Self-Improvement",
+      "short_title": "Knowledge-Centric Self-Improvement",
+      "year": 2026,
+      "date": "2026-07-21",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.19592v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.19592v1"
+        },
+        {
+          "label": "Official code",
+          "url": "https://github.com/recursive-knowledge/KSI"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-21",
+        "scope": "Persistent knowledge curation",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Makes a shared, curated knowledge base the object retained across otherwise disposable agents.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Agents contribute evidence-grounded findings to task and cross-task forums, followed by distillation. The evaluation includes budget-matched prompt-optimization baselines and cross-model reuse."
+          ],
+          [
+            "Results and comparison",
+            "The paper reports improved solve rates and lower listed costs across abstract reasoning, coding and terminal tasks, with knowledge transfer to held-out tasks and other model families."
+          ],
+          [
+            "Evaluation context",
+            "The persistent artifact is knowledge, while agents remain generic. Model roles and evaluation regimes differ across comparisons; improvements should be read per benchmark rather than as one universal gain."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "agentic-self-improvement-survey",
+      "title": "Self-Improvements in Modern Agentic Systems: A Survey",
+      "short_title": "Self-Improvements in Modern Agentic Systems",
+      "year": 2026,
+      "date": "2026-07-14",
+      "category": "concept",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Field-wide frameworks"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.13104v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.13104v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-14",
+        "scope": "Model and scaffold taxonomy",
+        "actor": "Not applicable: conceptual or survey contribution",
+        "summary": "Organizes persistent agent updates by the component changed and the feedback that drives them.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Treats an agent as a foundation model coupled to prompts, memory, tools and control logic; describes an update operator over model parameters or scaffold components."
+          ],
+          [
+            "Results and comparison",
+            "Provides a literature framework connecting applications and evaluation questions. This is a survey contribution rather than a new measured speedup or autonomous research experiment."
+          ],
+          [
+            "Evaluation context",
+            "Its component-based view complements this collection’s community/object categories. A memory or harness mechanism can appear in systems, model-development or agent work without duplicating the paper."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "economics-rsi",
+      "title": "The Economics of Recursive Self-Improvement",
+      "short_title": "The Economics of Recursive Self-Improvement",
+      "year": 2026,
+      "date": "2026-09-14",
+      "category": "concept",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Field-wide frameworks"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2609.15802v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2609.15802v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-09-14",
+        "scope": "Feedback-loop economics",
+        "actor": "Not applicable: conceptual or survey contribution",
+        "summary": "Models when AI-assisted research could produce sustained acceleration rather than improvements within a fixed task.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Directed feedback graphs connect research inputs, narrow AI-R&D ability and broader economically useful capability through loop elasticities."
+          ],
+          [
+            "Results and comparison",
+            "A tentative calibration puts a self-sustaining threshold near 15% R&D-productivity gain per capability-index unit, compared with an approximately 9% estimate from available uplift evidence."
+          ],
+          [
+            "Evaluation context",
+            "These are model-dependent, back-of-the-envelope estimates with substantial uncertainty, not an experimental measurement of a universal RSI threshold. The paper proposes empirical quantities that would improve calibration."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "spee",
+      "title": "Self-Improving Large Language Models via Progressive Experience Evolution",
+      "short_title": "Self-Improving Large Language Models via Progressive Experience Evolution",
+      "year": 2026,
+      "date": "2026-08-03",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Training recipes & data",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.02139v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.02139v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-03",
+        "scope": "Experience distillation and reinforcement learning",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "target": "Qwen3-4B/8B; AIME24, AIME25, GSM8K, MATH500 and MINA",
+        "summary": "Builds a validated experience pool, distills it into model weights and follows with reward-driven optimization.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Experience is extracted from successful and failed rollouts, consolidated and validated before privileged self-distillation and GRPO."
+          ],
+          [
+            "Results and comparison",
+            "Qwen3-8B average accuracy across five math benchmarks rises from 32.18% to 38.71%. Removing stage II gives 36.14%; removing the shared pool gives 35.48%. The study reports approximately 28% fewer training trajectories at matched performance versus GRPO."
+          ],
+          [
+            "Evaluation context",
+            "Accuracy, sampling success and training-trajectory count are distinct metrics. The trajectory reduction is not a measured 28% reduction in total compute."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "skill-self-play",
+      "title": "Skill Self-Play: Pushing the Frontier of LLM Capability with Co-Evolving Skills",
+      "short_title": "Skill Self-Play",
+      "year": 2026,
+      "date": "2026-07-24",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Training recipes & data",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.22529v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.22529v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-24",
+        "scope": "Skill-guided self-play curriculum",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Co-evolves a skill library, task proposer and solver using executable task checks.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "The proposer creates tasks conditioned on reusable skills and validators. The solver learns with GRPO; proposer rewards favor valid tasks near its current ability frontier."
+          ],
+          [
+            "Results and comparison",
+            "Evaluates five 3B–14B backbones over five iterations on tool calling and logical reasoning, with base-model and unguided-self-play comparisons and mechanism ablations. Final benchmark results use avg@8."
+          ],
+          [
+            "Evaluation context",
+            "The same checkpoint initializes proposer and solver. Unguided self-play cannot form a viable reasoning curriculum in this setup and is compared only on tool calling; that missing comparison should remain explicit."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "ai4ai-test-time",
+      "title": "AI4AI at Test-Time: Strong-to-Weak Capability Transfer via Harnesses",
+      "short_title": "AI4AI at Test-Time",
+      "year": 2026,
+      "date": "2026-08-12",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.12307v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.12307v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-12",
+        "scope": "Strong-to-weak harness transfer",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "target": "GPT-5.4-mini in the main reported comparison",
+        "summary": "Uses stronger builder models to improve weaker target models through executable harnesses without changing weights.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Builders refine harnesses using 5% validation data from four Theory-of-Mind benchmarks. Analysis distinguishes deterministic code, routing and formatting from additional model reasoning."
+          ],
+          [
+            "Results and comparison",
+            "Across 57 scaffolded GPT-5.4-mini runs, mean macro accuracy is 0.763, a +0.275 uplift. The best individual run reaches 0.912; that maximum is not the average outcome."
+          ],
+          [
+            "Evaluation context",
+            "The experiment evaluates task-specific harness construction. Builder and target are distinct roles, and comparisons to a human-designed harness remain task-dependent."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "gdpevo",
+      "title": "GDPevo: Evaluating Agent Self-Evolution on Real Business Tasks",
+      "short_title": "GDPevo",
+      "year": 2026,
+      "date": "2026-08-04",
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Memory & skills",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.03764v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.03764v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-04",
+        "scope": "Compositional transfer evaluation",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Distributes decision rules across training tasks and recombines them in held-out business workflows.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "An automated construction pipeline separates generation and review, controls the supervision supplied during evolution, and tests transfer of retained skills."
+          ],
+          [
+            "Results and comparison",
+            "The paper reports positive evolution gains but a substantial gap to a fully informed oracle ceiling of 91.6%. It releases benchmark construction and evaluation artifacts."
+          ],
+          [
+            "Evaluation context",
+            "The oracle receives information unavailable to ordinary agents; its score is an information-rich ceiling rather than a matched baseline. Rule recombination tests a designed transfer relation, not every form of business generalization."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "past-bench",
+      "title": "PAST-Bench: Benchmarking the Foundations of Recursive Self-Improvement in Personal Agents",
+      "short_title": "PAST-Bench",
+      "year": 2026,
+      "date": "2026-08-04",
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Memory & skills",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.04003v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.04003v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-04",
+        "scope": "Persistence-controlled agent evaluation",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Uses matched persistence-on and persistence-off runs to test whether retained experience helps future episodes.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "The benchmark includes 204 episodes across 26 task-family scenarios and four capability dimensions. Trace-backed mechanism scores accompany behavioral gains."
+          ],
+          [
+            "Results and comparison",
+            "The study compares personal-agent frameworks and performs mechanism-level changes to Hermes. Some component combinations help particular dimensions, while the overall Hermes/Hermes+ gain difference is smaller than run-to-run variation."
+          ],
+          [
+            "Evaluation context",
+            "This measures foundations of persistent adaptation across episode sequences. Mechanism evidence and performance deltas should be read together; successful retention alone does not establish improved research efficiency."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "s3gym",
+      "title": "S3Gym: Can LLMs Turn Self-Testing and Self-Judging into Self-Improvement?",
+      "short_title": "S3Gym",
+      "year": 2026,
+      "date": "2026-08-31",
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Memory & skills",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.31100v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.31100v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-31",
+        "scope": "Experience-integration pathways",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Separates exploration from held-out play to compare raw history, summarized memory and weight training.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Seven text games provide executable verifiers and distinct exploration/evaluation configurations. Experiments inspect self-judgment and how experience changes subsequent behavior."
+          ],
+          [
+            "Results and comparison",
+            "History, summaries and training produce task-dependent outcomes. Summaries help when strategic rules compress well; raw history can work better when exact state information matters. Parameter training also produces negative transfer in some settings."
+          ],
+          [
+            "Evaluation context",
+            "The games offer controlled feedback, not open-ended research tasks. The study makes the choice of retained representation an experimentally testable variable."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "modular-rsi",
+      "title": "ModularRSI: Modular and Generalizable Recursive Harness Self-Improvement",
+      "short_title": "ModularRSI",
+      "year": 2026,
+      "date": "2026-09-14",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2609.14857v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2609.14857v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-09-14",
+        "scope": "Modular harness evolution",
+        "actor": "DeepSeek-V4-Flash-Preview and DeepSeek-V4-Flash-0731 during evolution",
+        "summary": "Evolves separate harness modules using contrasting successful and failed trajectories and validation gates.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Module edits pass local checks before cross-module integration. Evolution uses 120 terminal-related and 120 software-related instances selected from a 2,000-instance curated dataset, over three epochs."
+          ],
+          [
+            "Results and comparison",
+            "Evaluation reports accuracy, pass@3, all-three-success consistency and interaction steps, including benchmark-disjoint and cross-model transfer analyses."
+          ],
+          [
+            "Evaluation context",
+            "The paper does not provide a dedicated ablation isolating contrastive trajectory analysis. Keep the full mechanism’s results separate from causal claims about that component."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "autoresearch-insight",
+      "title": "AutoResearch: Insight In, Hallucination Out",
+      "short_title": "AutoResearch",
+      "year": 2026,
+      "date": "2026-08-18",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.17906v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.17906v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-18",
+        "scope": "Evidence-gated research workflow",
+        "actor": "Model roles vary by experiment; exact configurations were not extracted in this review.",
+        "summary": "Connects grounded research ideas to implementation, diagnosis and independent review of experiment artifacts.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "A dependency graph coordinates executable research tasks; persistent state records results and evidence-based decisions to continue, revise or terminate a direction."
+          ],
+          [
+            "Results and comparison",
+            "In the RSICD retrieval case study, reported mean Recall improves from 32.84 to 34.69. The audit records five confirmed issue events for this system versus 11–27 for the compared autonomous research systems."
+          ],
+          [
+            "Evaluation context",
+            "These are case-study and audit outcomes, not a common-budget estimate of general research acceleration. The paper also studies systems optimization and benchmark-driven machine learning."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "intology-locus",
+      "title": "Intology Locus: Scaling Automated Post-Training",
+      "short_title": "Intology Locus",
+      "year": 2026,
+      "date": "2026-08-03",
+      "category": "recipe",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Official technical blog",
+          "url": "https://intology.ai/blog/scaling-automated-post-training"
+        },
+        {
+          "label": "Earlier Locus report",
+          "url": "https://intology.ai/blog/previewing-locus"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-03",
+        "scope": "Industry post-training report",
+        "actor": "Locus with Opus 5 in the reported Tier 1 comparison; other settings use different configurations.",
+        "summary": "Runs parallel, multi-day post-training experiments and reports both benchmark and production outcomes.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Locus searches model-training choices with dedicated experimentation infrastructure. The blog separates official PostTrainBench settings from a larger-compute PostTrainBench+ study."
+          ],
+          [
+            "Results and comparison",
+            "In the reported Tier 1 comparison, Locus with Opus 5 scores 44.7 versus 41.8 for Claude Code with Fable 5. A separate Bubble deployment reports lower error, latency and cost."
+          ],
+          [
+            "Evaluation context",
+            "The headline Tier 1 comparison changes both model and harness. Larger-budget results and the Bubble deployment have different conditions; they are not interchangeable estimates of a single effect. This entry records an industry report."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "xyz-aquila",
+      "title": "XYZ-Aquila: AI4AI at Scale",
+      "short_title": "XYZ-Aquila",
+      "year": 2026,
+      "date": "2026-07",
+      "category": "recipe",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Official technical blog",
+          "url": "https://xyz-lab.ai/blogs/ai4ai-at-scale/"
+        }
+      ],
+      "publication": {
+        "date": "2026-07",
+        "scope": "Industry AI-for-AI development report",
+        "actor": "Development-agent identifiers are not specified in the inspected blog; target backbones are Qwen3.6-35B-A3B and Qwen3.5-397B-A17B.",
+        "summary": "Uses gated interventions across data, training, runtime and context management to develop open-weight search agents.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Humans define objectives and acceptance criteria; agents diagnose failures and propose changes. Accepted and rejected attempts become auditable experience; external benchmarks are withheld from routine optimization."
+          ],
+          [
+            "Results and comparison",
+            "The blog reports seven search benchmarks for mini/pro systems. XYZ-Aquila-mini achieves 78.8% BrowseComp accuracy and 89.5 DeepSearchQA F1 in the reported setup."
+          ],
+          [
+            "Evaluation context",
+            "The results evaluate the final configurations, not isolated contributions of each intervention. Some baselines use different stacks or dates. The screened process-reward RL extension is excluded from the released systems."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "intentlab-production",
+      "title": "IntentLab: Turn Your Intent into Production Systems",
+      "short_title": "IntentLab",
+      "year": 2026,
+      "date": "2026-07-28",
+      "category": "system",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Systems code & policies"
+      ],
+      "sources": [
+        {
+          "label": "Official technical blog",
+          "url": "https://intentlab.ai/blog/turn-your-intent-into-production-systems"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-28",
+        "scope": "Industry inference-system report",
+        "actor": "IntentLab autonomous fleet; underlying model identifiers are not specified in the inspected blog.",
+        "summary": "An autonomous engineering fleet combines system design, implementation and verification for specialized software.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "The inference case re-engineers TensorRT-LLM for GLM 5.2 on Grace Blackwell nodes, combining kernel, runtime and communication changes with DSpark speculative decoding."
+          ],
+          [
+            "Results and comparison",
+            "The blog reports 102 output tokens/s for stock TensorRT-LLM, 161 after runtime optimization, and 647 with DSpark, approximately 6.3× the starting throughput."
+          ],
+          [
+            "Evaluation context",
+            "The total combines several interventions, including speculative decoding. The inspected page does not specify a complete batch, sequence-length, precision and search-cost protocol; treat it as an industry case report, not a directly comparable serving benchmark."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "openrsi-index",
+      "title": "OpenRSI Index: An Open Benchmark for Model-Development Research",
+      "short_title": "OpenRSI Index",
+      "year": 2026,
+      "date": "2026",
+      "category": "evaluation",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Training recipes & data",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Official index",
+          "url": "https://index.openrsi.foundation/index.html"
+        },
+        {
+          "label": "Task protocol",
+          "url": "https://index.openrsi.foundation/blog/introducing-rsi-index.html"
+        },
+        {
+          "label": "Tasks and execution logs",
+          "url": "https://github.com/OpenRSI-Foundation/OpenRSI-Index"
+        }
+      ],
+      "publication": {
+        "date": "Ongoing · reviewed 2026-09-25",
+        "scope": "Ongoing benchmark · preview v0.1",
+        "actor": "Task-dependent research agents, including Codex and Claude Code in the preview examples.",
+        "summary": "Packages open model-development projects as bounded research environments with separate verifiers and released trajectories.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "RSI-Harness keeps a persistent Work environment and evaluates snapshots in fresh Judge containers. Tasks specify editable boundaries, budgets and reference recipes; the best valid submission is retained."
+          ],
+          [
+            "Results and comparison",
+            "The preview includes optimizer scaling, visual generation, 122B post-training and smaller systems/agent tasks. Its Qwen task reports a five-benchmark geometric mean of 71.51 for agent-generated data versus 71.37 for the baseline, with mixed per-domain outcomes."
+          ],
+          [
+            "Evaluation context",
+            "This is an evolving preview, not a finalized leaderboard. The website and repository contain changing task descriptions and resource requirements; pin the task revision before comparing results. The Qwen headline gain is 0.14 points over the baseline, not the +0.42 points measured against the starting model."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "prime-agent",
+      "title": "Prime Agent: A Self-Improving RLM Harness",
+      "short_title": "Prime Agent",
+      "year": 2026,
+      "date": "2026-08-24",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Official repository",
+          "url": "https://github.com/PrimeIntellect-ai/prime-agent"
+        },
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.23552v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.23552v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-24",
+        "scope": "Persistent research-agent harness",
+        "actor": "Kimi K3, DeepSeek V4 Pro and GLM 5.3 in the nanoGPT harness comparison.",
+        "summary": "Combines a persistent Python control environment with revisable prompts, memories, skills and subagent specifications.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "A persistent Python environment supports tool orchestration and revisable prompts, memory, skills and subagent specifications. nanoGPT evaluates research on a 124M-parameter target, with each record checked as an eight-seed mean."
+          ],
+          [
+            "Results and comparison",
+            "Across 18 nanoGPT runs, the paper finds little harness effect on final records relative to experimental noise. DeepSeek V4 Pro creates roughly six times more out-of-training-script experiments per training run in Prime Agent than in Claude Code."
+          ],
+          [
+            "Evaluation context",
+            "Experiment counts are manually classified, with denominators audited where possible and otherwise estimated from launch commands. The result distinguishes changed research behavior from demonstrated final-score gains. Other benchmark comparisons use different models and budgets."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "shinkaevolve",
+      "title": "ShinkaEvolve: Open Program Evolution",
+      "short_title": "ShinkaEvolve",
+      "year": 2025,
+      "date": "2025-09-25",
+      "category": "harness",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Official repository",
+          "url": "https://github.com/SakanaAI/ShinkaEvolve"
+        },
+        {
+          "label": "Sakana technical blog",
+          "url": "https://sakana.ai/shinka-evolve/"
+        }
+      ],
+      "publication": {
+        "date": "2025-09-25 · ongoing project",
+        "scope": "Open evolutionary-search framework",
+        "actor": "Configurable LLM mutation ensemble with external fitness evaluation.",
+        "summary": "Maintains program populations and evaluated archives for LLM-guided scientific-code search.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "LLMs propose program mutations; an external evaluator supplies fitness. The repository supports parallel candidate evaluation, archives and evolving islands across local and cluster workflows."
+          ],
+          [
+            "Results and comparison",
+            "The launch blog reports a 26-circle packing solution found with 150 samples and an agent-scaffold experiment over 75 generations, including transfer tests."
+          ],
+          [
+            "Evaluation context",
+            "These are distinct tasks and budgets. Sample efficiency is not automatically dollar or wall-clock efficiency; current repository features are tracked separately from the 2025 launch results."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "gepa-framework",
+      "title": "GEPA: Reflective Optimization of Prompts, Code and Agent Systems",
+      "short_title": "GEPA",
+      "year": 2025,
+      "date": "2025-08",
+      "category": "harness",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Official repository",
+          "url": "https://github.com/gepa-ai/gepa"
+        },
+        {
+          "label": "Framework documentation",
+          "url": "https://gepa-ai.github.io/gepa/"
+        }
+      ],
+      "publication": {
+        "date": "2025-08 · ongoing project",
+        "scope": "Open reflective-search framework",
+        "actor": "Configurable reflection model and target system; optimizer and target can differ.",
+        "summary": "Combines trace-based reflection with Pareto-aware evolution over textual system parameters.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "The optimizer reads execution feedback to propose targeted edits, evaluates variants and preserves useful tradeoffs. The interface spans prompts, code, configurations and agent architectures."
+          ],
+          [
+            "Results and comparison",
+            "The maintained implementation exposes optimization and evaluation interfaces, examples and application reports. Reported benefits depend on the task, evaluator and optimization budget."
+          ],
+          [
+            "Evaluation context",
+            "This entry covers the ongoing framework. The Databricks enterprise case has a separate record because its model comparison, serving costs and held-out workload require their own experimental context."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "databricks-gepa",
+      "title": "Databricks Agent Bricks: Automated Prompt Optimization on IE Bench",
+      "short_title": "Databricks Agent Bricks",
+      "year": 2025,
+      "date": "2025-09-24",
+      "category": "harness",
+      "source_type": "project/blog",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses"
+      ],
+      "sources": [
+        {
+          "label": "Databricks technical blog",
+          "url": "https://www.databricks.com/blog/building-state-art-enterprise-agents-90x-cheaper-automated-prompt-optimization"
+        }
+      ],
+      "publication": {
+        "date": "2025-09-24",
+        "scope": "Industry prompt-optimization study",
+        "actor": "gpt-oss-120b and Claude Sonnet 4 optimizers; targets include gpt-oss-120b and Claude models.",
+        "summary": "Evaluates automated prompts on held-out enterprise information-extraction tasks and separates search from serving cost.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Compares GEPA, SIMBA and MIPROv2, including gpt-oss-120b as both optimizer and target and Claude Sonnet 4 as a stronger optimizer. A separate subset compares prompt optimization with SFT."
+          ],
+          [
+            "Results and comparison",
+            "The best GEPA-optimized gpt-oss-120b configuration gains 4.3 points over its baseline and 2.2 points over baseline Claude Opus 4.1. The reported roughly 90× cost advantage concerns serving."
+          ],
+          [
+            "Evaluation context",
+            "The cost estimate uses then-published prices and measured token distributions; it is not a current price quote or a 90× reduction in total research expenditure. The study separately discusses optimization overhead and amortization."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "rise-policy-distillation",
+      "title": "RISE: Recursive Improvement via Self-Extrapolating Policy Distillation",
+      "short_title": "RISE",
+      "year": 2026,
+      "date": "2026-09-04",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Training recipes & data"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2609.05295v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2609.05295v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-09-04",
+        "scope": "Reward-grounded self-distillation",
+        "actor": "Qwen and OLMo targets from 1.7B to 8B; no external teacher",
+        "summary": "Alternates verifiable-reward learning with distillation from an extrapolation of the model’s own training trajectory.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Constructs token-level targets from the displacement between current and anchor checkpoints, in weight or logit space. The teacher is refreshed each iteration; rollout samples are reused."
+          ],
+          [
+            "Results and comparison",
+            "Across three seeds, Qwen3-8B Math Avg is 62.4±0.2 versus GRPO’s 60.1±0.2. A separate gradient-budget-matched comparison reports 62.7 versus 60.5 for GRPO with two update passes."
+          ],
+          [
+            "Evaluation context",
+            "The additional distillation phase costs approximately 1.3–1.6× GRPO wall time per iteration. Removing reward grounding collapses MATH-500 accuracy to 2.4%; directly adopting extrapolated weights gives little average gain. Reward reliability remains a dependency."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "experience-funnel",
+      "title": "Experience Funnel: A State–Policy Alternating Loop for Self-Evolving Agents",
+      "short_title": "Experience Funnel",
+      "year": 2026,
+      "date": "2026-09-08",
+      "category": "recipe",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Model weights",
+        "Training recipes & data",
+        "Agent harnesses",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2609.08919v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2609.08919v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-09-08",
+        "scope": "Experience consolidation into weights",
+        "actor": "Qwen3.5-4B deployment policy; fixed Qwen3.5-27B distillation teacher; Ascend 910B3",
+        "summary": "Alternates editable skills and harness state with distillation into a deployment policy.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Validation gates state revisions before policy consolidation. Five state rounds produce two accepted updates; training, validation and final test splits have separate roles."
+          ],
+          [
+            "Results and comparison",
+            "On SearchQA, state-free accuracy rises from 58.1% to 61.3%; the matched evolved state and policy reaches 62.4%. Applying that evolved state to the initial policy gives 60.2%."
+          ],
+          [
+            "Evaluation context",
+            "Table 2 reports a separate 63.6% full-loop ablation, which should not replace Table 1’s 62.4% main result. ALFWorld and WebShop use different distillation budgets. Most intermediate configurations are single runs; repeated-run uncertainty is supplied for the final comparison."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "evoagentbench",
+      "title": "EvoAgentBench: Benchmarking Agent Self-Evolution via Ability Transfer",
+      "short_title": "EvoAgentBench",
+      "year": 2026,
+      "date": "2026-07-06",
+      "category": "evaluation",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Memory & skills",
+        "Evaluation protocols"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2607.05202v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2607.05202v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-07-06",
+        "scope": "Cross-task skill and memory transfer",
+        "actor": "OpenClaw and Nanobot; Qwen3.5-27B, Qwen3.5-397B and Gemma-4-31B evaluation backbones",
+        "summary": "Constructs train/test relations around reusable abilities to measure transfer from retained agent experience.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Compares case retrieval, reasoning memory and GEPA prompts across four domains, two scaffolds and three backbones. Tests use three independent runs per instance."
+          ],
+          [
+            "Results and comparison",
+            "Every automatic method has a negative-transfer cell. GEPA’s domain-and-scaffold average improves by 1.2, 3.5 and 5.7 points across the three backbones, while four individual cells regress."
+          ],
+          [
+            "Evaluation context",
+            "The Anchor Skill diagnostic uses curator-side routing labels unavailable to automatic methods. Its uniformly positive results are a diagnostic reference. Test tasks are selected for support and remaining headroom, so absolute gains do not estimate a random task population."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "limbo",
+      "title": "LIMBO: Lifelong Inference-Time Memory and Budget Optimization for LLM Agents",
+      "short_title": "LIMBO",
+      "year": 2026,
+      "date": "2026-09-12",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Memory & skills",
+        "Search / research procedures"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2609.14138v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2609.14138v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-09-12",
+        "scope": "Adaptive memory and compute allocation",
+        "actor": "Qwen2.5-7B, Llama3.1-8B and GPT-4o mini",
+        "summary": "Learns when retained experience is useful and how much inference budget to spend on each task.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "A contextual bandit chooses among no memory, full replay, compressed replay and retrieval, paired with budget tiers. Evaluation uses two 500-task LifelongAgentBench streams and three matched seeds."
+          ],
+          [
+            "Results and comparison",
+            "Across six model/environment settings, reported token-cost reductions are 26–83% against the strongest memory baseline, with accuracy differences ranging from −3.8 to +0.6 points. On Llama DB, accuracy reaches 66.2% versus 20.8% without replay."
+          ],
+          [
+            "Evaluation context",
+            "Local-model dollar costs use standardized token-price proxies, not measured serving expense. The largest savings occur where memory adds little accuracy. The method updates the allocation controller without changing the underlying language-model weights."
+          ]
+        ]
+      }
+    },
+    {
+      "slug": "shaper",
+      "title": "Self-Evolving Embodied Agents via Skill-Harness Evolution",
+      "short_title": "SHAPER",
+      "year": 2026,
+      "date": "2026-08-11",
+      "category": "harness",
+      "source_type": "paper",
+      "reviewed": "2026-09-25",
+      "targets": [
+        "Agent harnesses",
+        "Memory & skills"
+      ],
+      "sources": [
+        {
+          "label": "Paper v1",
+          "url": "https://arxiv.org/abs/2608.11350v1"
+        },
+        {
+          "label": "Full text v1",
+          "url": "https://arxiv.org/html/2608.11350v1"
+        }
+      ],
+      "publication": {
+        "date": "2026-08-11",
+        "scope": "Embodied skill and harness adaptation",
+        "actor": "Frozen Qwen3.6-27B planner; VLABench π0 executor or ESI-Bench interaction API",
+        "summary": "Evolves reusable skills and context-handling code around a frozen embodied planner and executor.",
+        "details": [
+          [
+            "Method and supplied infrastructure",
+            "Optimizes skills first, then the harness, using beam search and disjoint training, validation and evaluation episodes. VLABench evaluation includes 800 held-out episodes across four distribution-shift splits."
+          ],
+          [
+            "Results and comparison",
+            "VLABench success is 28.25% for the seed, 33.50% for skill-only, 30.50% for harness-only and 34.50% for the combined system. On 231 ESI-Bench questions, micro accuracy rises from 32.5% to 49.8%."
+          ],
+          [
+            "Evaluation context",
+            "The component results compare complete configurations; effects are not additive. The published GPT-5 reference uses another evaluation scope and is not a paired baseline. These are benchmark environments rather than a physical deployment study."
+          ]
+        ]
+      }
+    }
+  ],
+  "insights": [
+    {
+      "title": "Measure the deployed artifact, with its actual baseline",
+      "evidence": "KernelOPT evaluates reconstructed models against torch.compile. LLM4LLM reports end-to-end gains against eager execution. IntentLab separates runtime optimization from adding a speculative decoder.",
+      "interpretation": "Our reading: these studies address related engineering goals but measure different interventions. Kernel latency, model latency and serving throughput need separate comparison tables.",
+      "experiment": "For the same model and workload, test an unchanged baseline, kernel-only patches, integrated runtime changes and speculative decoding separately. Report correctness, batch/sequence settings, throughput and tail latency under matched precision.",
+      "works": [
+        "kernelopt",
+        "llm4llm",
+        "intentlab-production"
+      ]
+    },
+    {
+      "title": "Select for transfer, then test what each constraint contributes",
+      "evidence": "RRSI’s workspace ablation lowers held-out average from 43.6 to 40.3 when both regularizer groups are removed. Rethinking Harness Evaluation finds small held-out gains in its tested configurations.",
+      "interpretation": "Our reading: strong evolution-set performance and transferable improvements are different outcomes. These papers make selection rules and evaluation protocols central research objects.",
+      "experiment": "Hold the backbone, starting harness and candidate budget fixed. Compare unrestricted edits, sparse edits and stability-aware acceptance on unseen task families; repeat full searches across seeds and report uncertainty.",
+      "works": [
+        "rrsi",
+        "rethinking-harness-eval",
+        "modular-rsi"
+      ]
+    },
+    {
+      "title": "Persistent experience needs a task-stream test",
+      "evidence": "The fragility study changes a +1.5-point memory gain into a 4.5-point loss by shuffling task order. Knowledge-Centric Self-Improvement studies portable knowledge rather than one persistent agent.",
+      "interpretation": "Our reading: a useful memory should retain applicable constraints as well as successful actions. A single curriculum can hide sensitivity to what the agent encounters next.",
+      "experiment": "Compare no memory, raw trajectories, distilled knowledge and condition-aware retrieval on identical shuffled streams. Track cost, cross-model reuse, forgetting and changes in performance after each domain switch.",
+      "works": [
+        "self-improve-fragility",
+        "knowledge-centric",
+        "past-bench",
+        "s3gym"
+      ]
+    },
+    {
+      "title": "Separate the researcher, the harness and the trained model",
+      "evidence": "Frontis-MA1 evaluates model and harness swaps. Co-Harness updates both components, while AI4AI at Test-Time keeps target weights fixed and changes an external harness.",
+      "interpretation": "Our reading: “the model improved” can describe several distinct changes. Recording actor and target roles makes cross-community comparisons more informative.",
+      "experiment": "Run a two-by-two study with original/improved weights and original/improved harnesses. Keep data and evaluation fixed; add an unseen backbone to distinguish weight-specific adaptation from reusable procedures.",
+      "works": [
+        "frontis-ma1",
+        "co-harness",
+        "ai4ai-test-time"
+      ]
+    },
+    {
+      "title": "Research efficiency and deployment efficiency have different costs",
+      "evidence": "AIDE² constrains inner evaluation expenditure. KernelGenBench accounts for tokens per successful operator. Databricks separates prompt-search overhead from serving-cost estimates.",
+      "interpretation": "Our reading: faster or cheaper artifacts can still require substantial research expenditure. A fixed inner budget does not erase the outer search cost.",
+      "experiment": "Report total proposal, execution, evaluator and review costs. Plot held-out artifact quality against cumulative research spend, then estimate the deployment volume needed to recover that investment.",
+      "works": [
+        "aide2",
+        "kernelgenbench",
+        "databricks-gepa",
+        "economics-rsi"
+      ]
+    },
+    {
+      "title": "Treat scale transfer as part of the experimental contract",
+      "evidence": "OpenRSI’s optimizer task keeps one rule across a model-size ladder. KernelGenBench measures accelerator portability; compiler-grounded Triton reports results on a successful-conversion subset.",
+      "interpretation": "Our reading: model scale, hardware and successful-conversion coverage are separate axes. An average over a selected subset can answer a narrower question than a full-suite result.",
+      "experiment": "Choose the development hardware and small-model screens in advance. Freeze the selected method before evaluating larger models or unseen accelerators; count unsupported and failed cases alongside successful results.",
+      "works": [
+        "openrsi-index",
+        "kernelgenbench",
+        "compiler-grounded-triton"
+      ]
+    },
+    {
+      "title": "Finding a good candidate and retaining it are separate skills",
+      "evidence": "RSIBench-Data reports post-peak regressions in 78.26% of searches that continue past their best observed attempt. OpenRSI’s harness retains the best valid submission.",
+      "interpretation": "Our reading: search progress depends on checkpoint selection and reliable re-evaluation, not just generating additional ideas.",
+      "experiment": "Compare last-candidate, best-observed and independently rechecked selection with the same search traces. Use fresh evaluation seeds and report both best-discovered and finally delivered performance.",
+      "works": [
+        "rsibench-data",
+        "openrsi-index"
+      ]
+    },
+    {
+      "title": "A shared mechanism can connect different research communities",
+      "evidence": "The companion lists emphasize persistent state, harness evolution, verifiers and loop closure. Here, systems, kernels, model development and agent research remain distinct primary categories.",
+      "interpretation": "Our synthesis: use the community/object category as the paper’s home, then compare change mechanism and feedback path across homes. This preserves differences without assigning a single RSI quality score.",
+      "experiment": "Test whether an improved research procedure helps solve new problems under the same resource budget. Keep artifact improvement, transfer of the procedure and improvement of the improver as separate measured outcomes.",
+      "works": [
+        "agentic-self-improvement-survey",
+        "aide2",
+        "economics-rsi",
+        "rsi-survey"
+      ]
+    },
+    {
+      "title": "Separate retained guidance from competence absorbed into weights",
+      "evidence": "Experience Funnel tests evolved state with both initial and updated policies. RISE includes a gradient-budget-matched baseline and ablations of reward grounding and distillation.",
+      "interpretation": "“Self-improvement” can refer to different storage locations and feedback signals. A stronger combined agent does not by itself identify which component learned.",
+      "experiment": "Cross initial/evolved state with initial/updated weights on the same held-out tasks. Include a state-free evaluation and match gradient updates, rollout tokens and wall time separately.",
+      "works": [
+        "experience-funnel",
+        "rise-policy-distillation",
+        "co-harness",
+        "shaper"
+      ]
+    },
+    {
+      "title": "Useful experience depends on routing and its inference cost",
+      "evidence": "EvoAgentBench finds negative-transfer cells despite positive method averages; its curator-routed diagnostic is not a deployable baseline. LIMBO measures memory selection against both accuracy and token cost.",
+      "interpretation": "A memory can contain useful information but still be selected at the wrong time or cost more than its benefit. Retention, retrieval and execution should be measured separately.",
+      "experiment": "Hold memory contents fixed and compare no retrieval, random retrieval, learned routing and curator routing. Report per-domain accuracy, added tokens and failure types across multiple task orders.",
+      "works": [
+        "evoagentbench",
+        "limbo",
+        "self-improve-fragility",
+        "past-bench"
+      ]
+    }
+  ],
+  "reading_context": {
+    "window": "2026-06-25 to 2026-09-25",
+    "method": "Date-bounded arXiv web searches across the seven research directions, cross-checked against four community lists and original papers. Selected full-text methods and results were inspected; experiments were not independently reproduced.",
+    "coverage": "A targeted literature scan, not an exhaustive arXiv census. The direct arXiv API request was rejected (HTTP 406), so discovery used indexed arXiv pages and bibliography links. Older ongoing projects and industry reports are dated separately.",
+    "collections": [
+      {
+        "label": "lobehub / awesome-rsi",
+        "url": "https://github.com/lobehub/awesome-rsi"
+      },
+      {
+        "label": "pinkbubblebubble / awesome-rsi",
+        "url": "https://github.com/pinkbubblebubble/awesome-rsi"
+      },
+      {
+        "label": "Token-Rhythm / awesome-rsi",
+        "url": "https://github.com/Token-Rhythm/awesome-rsi"
+      },
+      {
+        "label": "Prism-Shadow / awesome-rsi",
+        "url": "https://github.com/Prism-Shadow/awesome-rsi"
+      }
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A curated reading desk for recursive self-improvement, specialized inference systems, kernels and research agents.">
+<title>Awesome RSI Work · Reading desk</title>
+<link rel="stylesheet" href="assets/browser.css?v=0dc2d870b46a">
+<script src="assets/browser.js?v=75b841bd4f5a" defer></script>
+</head>
+<body>
+<a class="skip" href="#catalog">Skip to papers</a>
+<aside class="sidebar">
+  <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">↻</span><span>Awesome<br> RSI Work<span class="brand-sub">THE RESEARCH COLLECTION</span></span></a>
+  <button id="about-taxonomy" class="taxonomy-link">About the taxonomy ↗</button>
+  <nav id="collections" aria-label="Collections"></nav>
+  <div class="nav-label" id="directions-label">RESEARCH DIRECTIONS</div>
+  <nav id="categories" aria-label="Research directions"></nav>
+  <div class="sidebar-bottom"><div class="edition"><span class="dot"></span><span id="updated">Loading collection…</span></div><p id="scope-note">Better artifacts are a starting point.<br>Recursive improvement needs evidence.</p><div class="utilities"><a href="README.md">README ↗</a><button id="theme" aria-label="Toggle dark mode">◐</button></div></div>
+</aside>
+<main id="catalog" tabindex="-1">
+  <header class="catalog-header"><div class="eyebrow" id="eyebrow">A CURATED READING DESK</div><div class="heading-row"><h1 id="heading">All works</h1><span id="total" class="total"></span></div><p id="subtitle">Systems, models, and the research that improves them.</p>
+  <div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" aria-label="Search works" placeholder="Search papers, models, hardware…" autocomplete="off"><kbd>/</kbd></div>
+  <div class="toolbar"><button id="filter-toggle" aria-expanded="false" aria-controls="filters">Filters <span aria-hidden="true">＋</span></button><button id="research-insights">Research insights</button><label><span id="sort-label">Sort</span> <select id="sort" aria-label="Sort works"><option value="curated">Curated</option><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select></label><button id="reset">Reset</button></div>
+  <div id="filters" hidden><label><span id="year-label">Year</span><select id="year"><option value="">All years</option></select></label><label><span id="type-label">Source</span><select id="type"><option value="">All sources</option><option value="paper">Paper</option><option value="project/blog">Project / blog</option></select></label><label><span>Change / evaluation target</span><select id="target"><option value="">All targets</option></select></label></div>
+  </header>
+  <div class="list-caption"><span id="results" role="status" aria-live="polite">Loading works…</span><span id="list-hint">SELECT TO READ →</span></div>
+  <div id="papers"></div>
+  <noscript>This reading desk needs JavaScript. <a href="README.md">Read the full paper list.</a></noscript>
+</main>
+<aside id="detail" aria-label="Selected work"><div class="empty-detail"><div class="eyebrow">YOUR READING DESK</div><h2>A closer look.</h2><p>Select a work to explore its methods, results, and evidence.</p></div></aside>
+<dialog id="taxonomy-dialog" aria-labelledby="taxonomy-title"><form method="dialog"><button class="dialog-close" aria-label="Close taxonomy">×</button></form><div id="taxonomy-content"></div></dialog>
+</body>
+</html>

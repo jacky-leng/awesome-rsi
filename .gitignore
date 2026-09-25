@@ -1,0 +1,8 @@
+_site/
+__pycache__/
+*.py[cod]
+node_modules/
+.env
+.env.*
+.codex/
+auth.json
